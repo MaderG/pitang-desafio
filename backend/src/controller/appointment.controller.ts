@@ -1,13 +1,15 @@
 import { Request, Response } from 'express'
-import { prisma } from '@/lib/prisma'
-import AppointmentSchema from '@/zod'
-import { AppointmentQuery } from '@/types/AppointmentQuery'
-import { appointmentValidationService } from '@/services/appointmentValidation.service'
-import { constructDateTime } from '@/utils/dateUtils'
-import { BookingBoundsError } from '@/errors/BookingBounds'
-import { AppointmentInput } from '@/types/AppointmentInput'
-import { mapStatusesToEnglish } from '@/utils/statusUtils'
+import { prisma } from '../lib/prisma'
+import AppointmentSchema from '../zod'
+import { AppointmentQuery } from '../types/AppointmentQuery'
+import { appointmentValidationService } from '../services/appointmentValidation.service'
+import { constructDateTime } from '../utils/dateUtils'
+import { BookingBoundsError } from '../errors/BookingBoundsError'
+import { AppointmentInput } from '../types/AppointmentInput'
+import { mapStatusesToEnglish } from '../utils/statusUtils'
 import { addHours, endOfDay, format, isBefore, isValid, parseISO, setHours, startOfDay } from 'date-fns'
+import { PastDateError } from '../errors/PastDateError'
+import { AlreadyBookedError } from '../errors/AlreadyBookedError'
 
 export default class AppointmentController {
   async create(req: Request, res: Response): Promise<Response> {
@@ -26,7 +28,7 @@ export default class AppointmentController {
       });
       return res.status(201).json(appointment);
     } catch (err) {
-      if (err instanceof BookingBoundsError) {
+      if (err instanceof BookingBoundsError || err instanceof PastDateError || err instanceof AlreadyBookedError) {
         return res.status(400).json({ error: err.message });
       }
       return res.status(500).json({ error: 'Internal Server Error' });
@@ -54,16 +56,15 @@ export default class AppointmentController {
       };
     }
 
-
-    if (status) {
-      const statusesInEnglish = mapStatusesToEnglish(status.split(','));
-      whereClause.status = { in: statusesInEnglish };
+    
+    // if there is not status, the query will return empty
+    if (!status) {
+      return res.json({ totalPages: 0, appointments: [], allAppointments: [] });
     }
 
-    console.log(whereClause.status)
-
-    console.log('a', status)
-
+    const statusesInEnglish = mapStatusesToEnglish(status.split(','));
+    whereClause.status = { in: statusesInEnglish };
+  
     try {
       const appointments = await prisma.appointment.findMany({
         where: whereClause,
