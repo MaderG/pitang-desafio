@@ -1,20 +1,9 @@
 import { Request, Response } from 'express'
-import { prisma } from '../lib/prisma'
 import { AppointmentSchema } from '../zod'
 import { AppointmentQuery } from '../types/AppointmentQuery'
 import { constructDateTime } from '../utils/dateUtils'
 import { BookingBoundsError } from '../errors/BookingBoundsError'
 import { AppointmentInput } from '../types/AppointmentInput'
-import {
-  addHours,
-  endOfDay,
-  format,
-  isBefore,
-  isValid,
-  parseISO,
-  setHours,
-  startOfDay,
-} from 'date-fns'
 import { PastDateError } from '../errors/PastDateError'
 import { AlreadyBookedError } from '../errors/AlreadyBookedError'
 import { createAppointmentService } from '../services/createAppointment.service'
@@ -23,6 +12,7 @@ import { InvalidDateError } from '../errors/InvalidDateError'
 import { InvalidStatusError } from '../errors/InvalidStatusError'
 import { updateAppointmentService } from '../services/updateAppointment.service'
 import { AppointmentNotExistsError } from '../errors/AppointmentNotExistsError'
+import { availableAppointmentService } from '../services/availableAppointment.service'
 
 export default class AppointmentController {
   async create(req: Request, res: Response): Promise<Response> {
@@ -107,71 +97,24 @@ export default class AppointmentController {
 
   async listAvailableDays(req: Request, res: Response) {
     try {
-      const appointments = await prisma.appointment.findMany({
-        select: {
-          date: true,
-        },
-      })
-
-      const dates = appointments.map((appointment) =>
-        format(startOfDay(new Date(appointment.date)), 'yyyy-MM-dd'),
-      )
-      const uniqueDates = [...new Set(dates)]
-      return res.json(uniqueDates)
+      const uniqueDays = await availableAppointmentService.listAvailableDays()
+      return res.json(uniqueDays)
     } catch (err) {
-      if (err instanceof Error) {
-        return res.status(400).json({ error: err.message })
-      }
+      return res.status(500).json({ error: 'Internal Server Error' })
     }
-  }
+    }
 
   async listAvailableTimes(req: Request, res: Response) {
     try {
       const { date } = req.query
-      if (!date || !isValid(parseISO(date as string))) {
-        return res
-          .status(400)
-          .json({ error: 'Missing or invalid date query parameter' })
-      }
-
-      const dayStart = startOfDay(parseISO(date as string))
-      const dayEnd = endOfDay(parseISO(date as string))
-
-      const appointments = await prisma.appointment.findMany({
-        where: {
-          date: {
-            gte: dayStart,
-            lte: dayEnd,
-          },
-        },
-        select: {
-          date: true,
-        },
-      })
-
-      const timeCounts: Record<string, number> = {}
-      appointments.forEach((appointment) => {
-        const time = format(appointment.date, 'HH:mm')
-        timeCounts[time] = (timeCounts[time] || 0) + 1
-      })
-
-      const availableTimes: string[] = []
-      let currentTime = setHours(dayStart, 8)
-      const endTime = setHours(dayStart, 18)
-
-      while (isBefore(currentTime, endTime)) {
-        const formattedHour = format(currentTime, 'HH:mm')
-        if (!timeCounts[formattedHour] || timeCounts[formattedHour] < 2) {
-          availableTimes.push(formattedHour)
-        }
-        currentTime = addHours(currentTime, 1)
-      }
-
+      const availableTimes =
+        await availableAppointmentService.listAvailableTimes(date as string)
       return res.json(availableTimes)
     } catch (err) {
-      if (err instanceof Error) {
-        return res.status(500).json({ error: err.message })
+      if (err instanceof InvalidDateError) {
+        return res.status(400).json({ error: err.message })
       }
+      return res.status(500).json({ error: 'Internal Server Error' })
     }
   }
 }
