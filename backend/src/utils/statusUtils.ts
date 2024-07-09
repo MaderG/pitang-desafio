@@ -1,7 +1,7 @@
 export const statusMapping = {
   Pendente: 'PENDING',
-  Cancelado: 'CANCELLED',
-  Concluído: 'CONCLUDED'
+  Cancelado: 'CANCELED',
+  Finalizado: 'FINISHED'
 };
 
 export function mapStatusToEnglish(status: string): string {

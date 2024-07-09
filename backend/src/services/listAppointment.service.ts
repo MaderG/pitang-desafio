@@ -4,21 +4,14 @@ import { mapStatusesToEnglish } from '../utils/statusUtils'
 import { AppointmentQuery } from '../types/AppointmentQuery'
 import { Appointment } from '@prisma/client'
 import { InvalidDateError } from '../errors/InvalidDateError'
-import { VALID_STATUSES } from '../contants'
+import { VALID_STATUSES } from '../constants'
 import { InvalidStatusError } from '../errors/InvalidStatusError'
 
 export class ListAppointmentService {
   async listAppointments(
     query: AppointmentQuery,
   ): Promise<{ totalPages: number; appointments: Appointment[] }> {
-    const {
-      page,
-      limit,
-      date,
-      status,
-      sortBy,
-      order
-    } = query
+    const { page, limit, date, status, sortBy, order } = query
 
     const whereClause: {
       date?: { gte: Date; lte: Date }
@@ -30,7 +23,7 @@ export class ListAppointmentService {
       whereClause.date = dateFilter
     }
 
-    // const sortFilter = 
+    // const sortFilter =
 
     const statusFilter = this.processStatusFilter(status)
 
@@ -81,9 +74,10 @@ export class ListAppointmentService {
     if (!status) {
       return undefined
     }
-
     const translatedStatuses = mapStatusesToEnglish(status.split(','))
-    const isValid = translatedStatuses.every((status) => VALID_STATUSES.includes(status))
+    const isValid = translatedStatuses.every((status) =>
+      VALID_STATUSES.includes(status),
+    )
 
     if (!isValid) {
       throw new InvalidStatusError('Status inexistente')
