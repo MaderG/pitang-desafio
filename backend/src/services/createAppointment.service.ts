@@ -12,7 +12,10 @@ import {
 import { AlreadyBookedError } from '../errors/AlreadyBookedError'
 import { PastDateError } from '../errors/PastDateError'
 import { Appointment } from '@prisma/client'
-import { MAX_DAILY_APPOINTMENTS, MAX_HOURLY_APPOINTMENTS } from '../constants'
+import {
+  MAX_DAILY_APPOINTMENTS,
+  MAX_HOURLY_APPOINTMENTS,
+} from '../utils/constants'
 
 export class CreateAppointmentService {
   async createAppointment(
@@ -38,7 +41,6 @@ export class CreateAppointmentService {
     await this.validateExistingAppointment(inputData, dateObj)
     await this.validateDailyLimit(dateObj)
     await this.validateHourlyLimit(dateObj)
-
   }
 
   private checkPastDate(dateObj: Date): void {
@@ -59,7 +61,6 @@ export class CreateAppointmentService {
       },
     })
 
-    
     if (appointments.length >= MAX_DAILY_APPOINTMENTS) {
       throw new BookingBoundsError('Limite de agendamentos excedido para o dia')
     }

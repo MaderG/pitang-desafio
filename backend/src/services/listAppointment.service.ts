@@ -4,7 +4,7 @@ import { mapStatusesToEnglish } from '../utils/statusUtils'
 import { AppointmentQuery } from '../types/AppointmentQuery'
 import { Appointment } from '@prisma/client'
 import { InvalidDateError } from '../errors/InvalidDateError'
-import { VALID_SORT_BY, VALID_STATUSES } from '../constants'
+import { VALID_SORT_BY, VALID_STATUSES } from '../utils/constants'
 import { InvalidStatusError } from '../errors/InvalidStatusError'
 import { InvalidSortByError } from '../errors/InvalidSortByError'
 
@@ -26,7 +26,8 @@ export class ListAppointmentService {
 
     const sortFilter = this.processSortFilter(sortBy)
     if (!sortFilter) {
-      throw new InvalidSortByError('Parâmetro de ordenação inválido')}
+      throw new InvalidSortByError('Parâmetro de ordenação inválido')
+    }
 
     const statusFilter = this.processStatusFilter(status)
 
@@ -43,7 +44,6 @@ export class ListAppointmentService {
         [sortBy === 'time' ? 'date' : sortBy]: order,
       },
     })
-
 
     const totalRecords = await prisma.appointment.count({
       where: whereClause,

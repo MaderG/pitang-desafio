@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { DEFAULT_LIMIT, DEFAULT_PAGE } from '../constants'
+import { DEFAULT_LIMIT, DEFAULT_PAGE } from '../utils/constants'
 
 export const AppointmentSchema = z.object({
   id: z.number().optional(),
