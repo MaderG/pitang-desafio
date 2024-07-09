@@ -4,31 +4,45 @@ import { VALID_STATUSES } from '../constants'
 import { InvalidStatusError } from '../errors/InvalidStatusError'
 import { mapStatusToEnglish } from '../utils/statusUtils'
 import { AppointmentNotExistsError } from '../errors/AppointmentNotExistsError'
+import { MissingParametersError } from '../errors/MissingParametersError'
+import { UnableToUpdateError } from '../errors/UnableToUpdateError'
 
 export class UpdateAppointmentService {
   async updateAppointment(id: string, status: string): Promise<Appointment> {
-    console.log('entrei')
-    const newStatus = await this.validateStatus(status)
-    const appointment = await prisma.appointment.update({
-      where: {
-        id: Number(id),
-      },
-      data: {
-        status: newStatus,
-      },
-    })
+    if (!id) {
+      throw new MissingParametersError('É necessário informar o id do agendamento')
+    }
+    
+    if (!status) {
+      throw new MissingParametersError('É necessário informar o status')
+    }
+    
+    const existingAppointment = await prisma.appointment.findUnique({
+      where: { id: Number(id) },
+    });
 
-    if (!appointment) {
-      throw new AppointmentNotExistsError('Agendamento não encontrado')
+    if (!existingAppointment) {
+      throw new AppointmentNotExistsError('Agendamento não encontrado');
     }
 
-    return appointment
+    const newStatus = await this.validateStatus(status)
+    try {
+      const appointment = await prisma.appointment.update({
+        where: {
+          id: Number(id),
+        },
+        data: {
+          status: newStatus,
+        },
+      })
+
+      return appointment
+    } catch (err) {
+      throw new UnableToUpdateError('Não foi possível atualizar o agendamento')
+    }
   }
 
   private async validateStatus(status: string): Promise<string> {
-    if (!status) {
-      throw new InvalidStatusError('Status is required')
-    }
     const translatedStatus = mapStatusToEnglish(status)
     const isValidStatus = VALID_STATUSES.includes(translatedStatus)
     if (!isValidStatus) {
