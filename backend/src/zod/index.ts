@@ -2,6 +2,7 @@ import { z } from 'zod'
 import { DEFAULT_LIMIT, DEFAULT_PAGE } from '../constants'
 
 export const AppointmentSchema = z.object({
+  id: z.number().optional(),
   name: z.string().min(1, 'Insira seu nome'),
   birthDate: z.string(),
   date: z.string(),
