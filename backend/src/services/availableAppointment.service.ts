@@ -1,6 +1,8 @@
+import { MAX_DAILY_APPOINTMENTS } from '../constants';
 import { InvalidDateError } from '../errors/InvalidDateError';
 import { prisma } from '../lib/prisma';
 import { format, startOfDay, endOfDay, parseISO, setHours, isBefore, addHours, isValid } from 'date-fns';
+import { TimeCounts } from '../types/TimeCounts';
 
 export class AvailableAppointmentService {
   async listAvailableDays() {
@@ -25,7 +27,7 @@ export class AvailableAppointmentService {
       select: { date: true },
     });
 
-    const timeCounts: { [key: string]: number } = {};
+    const timeCounts: TimeCounts = {};
     appointments.forEach(appointment => {
       const time = format(appointment.date, 'HH:mm');
       timeCounts[time] = (timeCounts[time] || 0) + 1;
@@ -44,6 +46,27 @@ export class AvailableAppointmentService {
     }
 
     return availableTimes;
+  }
+
+  async listUnavailableDays() {
+    const result = await prisma.appointment.groupBy({
+      by: ['date'],
+      _count: true,
+    });
+
+    const appointmentsPerDay =result.reduce((acc, result) => {
+      const day = format(startOfDay(result.date), 'yyyy-MM-dd');
+      acc[day] = (acc[day] || 0) + result._count;
+      return acc;
+    }, {} as TimeCounts);
+
+    const unavailableDays = Object.entries(appointmentsPerDay)
+      .filter(([, count]) => count >= MAX_DAILY_APPOINTMENTS)
+      .map(([day]) => day);
+
+    console.log(unavailableDays)
+
+    return unavailableDays;
   }
 }
 

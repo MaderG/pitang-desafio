@@ -7,7 +7,14 @@ const appointmentController = new AppointmentController()
 appointmentRouter.post('/api/appointments', appointmentController.create)
 appointmentRouter.get('/api/appointments', appointmentController.index)
 appointmentRouter.put('/api/appointments/:id', appointmentController.update)
-appointmentRouter.get('/api/available-days', appointmentController.listAvailableDays)
-appointmentRouter.get('/api/available-times', appointmentController.listAvailableTimes)
+appointmentRouter.get(
+  '/api/available-days',
+  appointmentController.listAvailableDays,
+)
+appointmentRouter.get(
+  '/api/available-times',
+  appointmentController.listAvailableTimes,
+)
+appointmentRouter.get('/api/unavailable-days', appointmentController.listUnavailableDays)
 
 export default appointmentRouter

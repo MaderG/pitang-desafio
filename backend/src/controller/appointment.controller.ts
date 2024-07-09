@@ -117,4 +117,14 @@ export default class AppointmentController {
       return res.status(500).json({ error: 'Internal Server Error' })
     }
   }
+
+  async listUnavailableDays(req: Request, res: Response) {
+    try {
+      const unavailableDays =
+        await availableAppointmentService.listUnavailableDays()
+      return res.json(unavailableDays)
+    } catch (err) {
+      return res.status(500).json({ error: 'Internal Server Error' })
+  }
+}
 }
