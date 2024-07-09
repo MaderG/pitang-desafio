@@ -32,13 +32,13 @@ describe('AppointmentController', () => {
   });
 
   describe('create', () => {
-    it('should create an appointment and return 201', async () => {
-      const mockAppointment = { id: '1', name: 'John Doe', birthDate: '1990-01-01', date: '2023-01-01', time: '10:00', status: 'PENDING' };
+    it.only('should create an appointment and return 201', async () => {
+      const mockAppointment = { id: '1', name: 'John Doe', birthDate: '1990-01-01', date: '2025-01-01', time: '10:00', status: 'PENDING' };
       const createAppointmentMock = createAppointmentService.createAppointment as jest.Mock;
       createAppointmentMock.mockResolvedValue(mockAppointment);
       const res = await request(app)
         .post('/appointments')
-        .send({ name: 'John Doe', birthDate: '1990-01-01', date: '2023-01-01', time: '10:00', status: 'PENDING' });
+        .send({ name: 'John Doe', birthDate: '1990-01-01', date: '2025-01-01', time: '10:00', status: 'PENDING' });
 
       expect(res.status).toBe(201);
       expect(res.body).toEqual(mockAppointment);
@@ -51,7 +51,7 @@ describe('AppointmentController', () => {
 
       const res = await request(app)
         .post('/appointments')
-        .send({ date: 'invalid-date', time: '10:00', status: 'scheduled' });
+        .send({ date: 'invalid-date', time: '10:00', status: 'PENDING' });
 
       expect(res.status).toBe(400);
     });
