@@ -4,8 +4,9 @@ import { mapStatusesToEnglish } from '../utils/statusUtils'
 import { AppointmentQuery } from '../types/AppointmentQuery'
 import { Appointment } from '@prisma/client'
 import { InvalidDateError } from '../errors/InvalidDateError'
-import { VALID_STATUSES } from '../constants'
+import { VALID_SORT_BY, VALID_STATUSES } from '../constants'
 import { InvalidStatusError } from '../errors/InvalidStatusError'
+import { InvalidSortByError } from '../errors/InvalidSortByError'
 
 export class ListAppointmentService {
   async listAppointments(
@@ -23,7 +24,9 @@ export class ListAppointmentService {
       whereClause.date = dateFilter
     }
 
-    // const sortFilter =
+    const sortFilter = this.processSortFilter(sortBy)
+    if (!sortFilter) {
+      throw new InvalidSortByError('Parâmetro de ordenação inválido')}
 
     const statusFilter = this.processStatusFilter(status)
 
@@ -41,7 +44,6 @@ export class ListAppointmentService {
       },
     })
 
-    console.log('app', appointments)
 
     const totalRecords = await prisma.appointment.count({
       where: whereClause,
@@ -70,10 +72,21 @@ export class ListAppointmentService {
     }
   }
 
+  private processSortFilter(sortBy: string): string {
+    if (!VALID_SORT_BY.includes(sortBy)) {
+      throw new InvalidSortByError('Parâmetro de ordenação inválido')
+    }
+    if (sortBy === 'time') {
+      return 'date'
+    }
+    return sortBy
+  }
+
   private processStatusFilter(status?: string): string[] | undefined {
     if (!status) {
       return undefined
     }
+
     const translatedStatuses = mapStatusesToEnglish(status.split(','))
     const isValid = translatedStatuses.every((status) =>
       VALID_STATUSES.includes(status),
