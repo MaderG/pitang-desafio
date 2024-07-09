@@ -32,7 +32,7 @@ describe('AppointmentController', () => {
   });
 
   describe('create', () => {
-    it.only('should create an appointment and return 201', async () => {
+    it('should create an appointment and return 201', async () => {
       const mockAppointment = { id: '1', name: 'John Doe', birthDate: '1990-01-01', date: '2025-01-01', time: '10:00', status: 'PENDING' };
       const createAppointmentMock = createAppointmentService.createAppointment as jest.Mock;
       createAppointmentMock.mockResolvedValue(mockAppointment);
