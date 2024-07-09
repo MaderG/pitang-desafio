@@ -1,31 +1,25 @@
 import { Request, Response } from 'express'
 import { prisma } from '../lib/prisma'
-import AppointmentSchema from '../zod'
+import {AppointmentSchema} from '../zod'
 import { AppointmentQuery } from '../types/AppointmentQuery'
-import { appointmentValidationService } from '../services/appointmentValidation.service'
 import { constructDateTime } from '../utils/dateUtils'
 import { BookingBoundsError } from '../errors/BookingBoundsError'
 import { AppointmentInput } from '../types/AppointmentInput'
-import { mapStatusesToEnglish } from '../utils/statusUtils'
 import { addHours, endOfDay, format, isBefore, isValid, parseISO, setHours, startOfDay } from 'date-fns'
 import { PastDateError } from '../errors/PastDateError'
 import { AlreadyBookedError } from '../errors/AlreadyBookedError'
+import { createAppointmentService } from '../services/createAppointment.service'
+import { listAppointmentService } from '../services/listAppointment.service'
+import { InvalidDateError } from '../errors/InvalidDateError'
+import { InvalidStatusError } from '../errors/InvalidStatusError'
 
 export default class AppointmentController {
   async create(req: Request, res: Response): Promise<Response> {
     try {
       const inputData: AppointmentInput = AppointmentSchema.parse(req.body);
       const dateObj = constructDateTime(inputData.date, inputData.time);
-  
-      await appointmentValidationService.validateAppointment(inputData, dateObj);
-  
-      const appointment = await prisma.appointment.create({
-        data: {
-          name: inputData.name,
-          birthDate: parseISO(inputData.birthDate),
-          date: dateObj,
-        },
-      });
+      
+      const appointment = await createAppointmentService.createAppointment(inputData, dateObj);
       return res.status(201).json(appointment);
     } catch (err) {
       if (err instanceof BookingBoundsError || err instanceof PastDateError || err instanceof AlreadyBookedError) {
@@ -36,56 +30,34 @@ export default class AppointmentController {
   }
 
   async index(req: Request, res: Response) {
-    const {
-      page = '1',
-      limit = '10',
+    try {
+      const {
+        page = '1',
+        limit = '10',
+        date,
+        status,
+        sortBy = 'date',
+        order = 'asc'
+    } = req.query as Partial<AppointmentQuery>;
+
+    const query: AppointmentQuery = {
+      page,
+      limit,
       date,
       status,
-      sortBy = 'date',
-      order = 'asc',
-    } = req.query as AppointmentQuery;
+      sortBy,
+      order
+  };
 
-    const whereClause: { date?: { gte: Date; lte: Date }; status?: { in: string[] }; } = {};
+      const { totalPages, appointments } = await listAppointmentService.listAppointments(query);
 
-    if (date && isValid(parseISO(date))) {
-      const dayStart = startOfDay(parseISO(date));
-      const dayEnd = endOfDay(parseISO(date));
-      whereClause.date = {
-        gte: dayStart,
-        lte: dayEnd,
-      };
-    }
-
-    
-    // if there is not status, the query will return empty
-    if (!status) {
-      return res.json({ totalPages: 0, appointments: [], allAppointments: [] });
-    }
-
-    const statusesInEnglish = mapStatusesToEnglish(status.split(','));
-    whereClause.status = { in: statusesInEnglish };
-  
-    try {
-      const appointments = await prisma.appointment.findMany({
-        where: whereClause,
-        take: Number(limit),
-        skip: (Number(page) - 1) * Number(limit),
-        orderBy: {
-          [sortBy === 'time' ? 'date' : sortBy]: order,
-        },
-      });
-
-      const totalRecords = await prisma.appointment.count({
-        where: whereClause,
-      });
-
-      const allAppointments = await prisma.appointment.findMany();
-
-      const totalPages = Math.ceil(totalRecords / Number(limit));
-
-      return res.json({ totalPages, appointments, allAppointments });
-    } catch (error) {
-      console.error('Error retrieving appointments:', error);
+      return res.status(200).json({ totalPages, appointments });
+    } catch (err) {
+      if (err instanceof InvalidDateError || err instanceof InvalidStatusError) {
+        console.log(err.message)
+        return res.status(400).json({ error: err.message });
+      }
+      console.error('Error retrieving appointments:', err);
       return res.status(500).json({ error: 'Internal Server Error' });
     }
   }
