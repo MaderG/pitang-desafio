@@ -35,9 +35,9 @@ export class CreateAppointmentService {
     dateObj: Date,
   ): Promise<void> {
     this.checkPastDate(dateObj)
+    await this.validateExistingAppointment(inputData, dateObj)
     await this.validateDailyLimit(dateObj)
     await this.validateHourlyLimit(dateObj)
-    await this.validateExistingAppointment(inputData, dateObj)
   }
 
   private checkPastDate(dateObj: Date): void {
@@ -48,6 +48,7 @@ export class CreateAppointmentService {
   private async validateDailyLimit(dateObj: Date): Promise<void> {
     const start = startOfDay(dateObj)
     const end = endOfDay(dateObj)
+
     const appointments = await prisma.appointment.findMany({
       where: {
         date: {
@@ -57,6 +58,7 @@ export class CreateAppointmentService {
       },
     })
 
+    
     if (appointments.length >= MAX_DAILY_APPOINTMENTS) {
       throw new BookingBoundsError('Limite de agendamentos excedido para o dia')
     }
