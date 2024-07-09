@@ -133,8 +133,6 @@ describe('ListAppointmentService', () => {
 
     const result = await service.listAppointments(query);
 
-    console.log(result.appointments)
-
     expect(result.appointments).toEqual(mockAppointments);
     expect(result.totalPages).toEqual(1);
     expect(prisma.appointment.findMany).toHaveBeenCalledWith({
