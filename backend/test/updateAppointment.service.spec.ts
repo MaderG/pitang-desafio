@@ -60,6 +60,10 @@ describe('UpdateAppointmentService', () => {
     await expect(service.updateAppointment('1', '')).rejects.toThrow(MissingParametersError);
   });
 
+  it('should throw MissingParametersError if teh id is not a digit', async () => {
+    await expect(service.updateAppointment('aa', 'CANCELED')).rejects.toThrow(MissingParametersError);
+  });
+
   it('should throw InvalidStatusError for invalid status', async () => {
     (mapStatusToEnglish as jest.Mock).mockReturnValue('invalid-status');
 
