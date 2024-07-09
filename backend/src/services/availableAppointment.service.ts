@@ -64,7 +64,6 @@ export class AvailableAppointmentService {
       .filter(([, count]) => count >= MAX_DAILY_APPOINTMENTS)
       .map(([day]) => day);
 
-    console.log(unavailableDays)
 
     return unavailableDays;
   }

@@ -38,6 +38,7 @@ export class CreateAppointmentService {
     await this.validateExistingAppointment(inputData, dateObj)
     await this.validateDailyLimit(dateObj)
     await this.validateHourlyLimit(dateObj)
+
   }
 
   private checkPastDate(dateObj: Date): void {
