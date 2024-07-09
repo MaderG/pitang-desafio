@@ -7,27 +7,26 @@ import { AppointmentNotExistsError } from '../errors/AppointmentNotExistsError'
 
 export class UpdateAppointmentService {
   async updateAppointment(id: string, status: string): Promise<Appointment> {
-    console.log('entrei')
     const newStatus = await this.validateStatus(status)
-    const appointment = await prisma.appointment.update({
-      where: {
-        id: Number(id),
-      },
-      data: {
-        status: newStatus,
-      },
-    })
+    try {
+      const appointment = await prisma.appointment.update({
+        where: {
+          id: Number(id),
+        },
+        data: {
+          status: newStatus,
+        },
+      })
 
-    if (!appointment) {
+      return appointment
+    } catch (error) {
       throw new AppointmentNotExistsError('Agendamento não encontrado')
     }
-
-    return appointment
   }
 
   private async validateStatus(status: string): Promise<string> {
     if (!status) {
-      throw new InvalidStatusError('Status is required')
+      throw new InvalidStatusError('É necessário informar o status')
     }
     const translatedStatus = mapStatusToEnglish(status)
     const isValidStatus = VALID_STATUSES.includes(translatedStatus)
