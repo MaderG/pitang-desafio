@@ -11,6 +11,7 @@ import { InvalidStatusError } from '../errors/InvalidStatusError'
 import { MissingParametersError } from '../errors/MissingParametersError'
 import { PastDateError } from '../errors/PastDateError'
 import { UnableToUpdateError } from '../errors/UnableToUpdateError'
+import { InvalidHourError } from '../errors/InvalidHourError'
 
 export function handleErrorResponse(err: Error, res: Response): Response {
   if (
@@ -22,7 +23,8 @@ export function handleErrorResponse(err: Error, res: Response): Response {
     err instanceof InvalidStatusError ||
     err instanceof MissingParametersError ||
     err instanceof PastDateError ||
-    err instanceof UnableToUpdateError
+    err instanceof UnableToUpdateError ||
+    err instanceof InvalidHourError
   ) {
     return res.status(400).json({ error: err.message })
   }
