@@ -7,12 +7,17 @@ import { InvalidDateError } from '../errors/InvalidDateError'
 import { VALID_SORT_BY, VALID_STATUSES } from '../utils/constants'
 import { InvalidStatusError } from '../errors/InvalidStatusError'
 import { InvalidSortByError } from '../errors/InvalidSortByError'
+import { InvalidParamsError } from '../errors/InvaliParamsError'
 
 export class ListAppointmentService {
   async listAppointments(
     query: AppointmentQuery,
   ): Promise<{ totalPages: number; appointments: Appointment[] }> {
     const { page, limit, date, status, sortBy, order } = query
+
+
+    const parsedPage = this.processPageFilter(page)
+    const parsedLimit = this.processLimitFilter(limit)
 
     const whereClause: {
       date?: { gte: Date; lte: Date }
@@ -38,8 +43,8 @@ export class ListAppointmentService {
 
     const appointments = await prisma.appointment.findMany({
       where: whereClause,
-      take: Number(limit),
-      skip: (Number(page) - 1) * Number(limit),
+      take: parsedLimit,
+      skip: (parsedPage - 1) * parsedLimit,
       orderBy: {
         [sortBy === 'time' ? 'date' : sortBy]: order,
       },
@@ -52,6 +57,22 @@ export class ListAppointmentService {
     const totalPages = Math.ceil(totalRecords / Number(limit))
 
     return { totalPages, appointments }
+  }
+
+  private processPageFilter(page: string): number {
+    const parsedPage = Number(page)
+    if (isNaN(parsedPage) || parsedPage < 1) {
+      throw new InvalidParamsError('Página inválida')
+    }
+    return parsedPage
+  }
+
+  private processLimitFilter(limit: string): number {
+    const parsedLimit = Number(limit)
+    if (isNaN(parsedLimit) || parsedLimit < 1) {
+      throw new InvalidParamsError('Limite inválido')
+    }
+    return parsedLimit
   }
 
   private processDateFilter(

@@ -1,23 +1,27 @@
 import { Response } from 'express'
-import { BookingBoundsError } from '../errors/BookingBoundsError'
-import { PastDateError } from '../errors/PastDateError'
+import { ZodError } from 'zod'
+
 import { AlreadyBookedError } from '../errors/AlreadyBookedError'
-import { InvalidDateError } from '../errors/InvalidDateError'
-import { InvalidStatusError } from '../errors/InvalidStatusError'
 import { AppointmentNotExistsError } from '../errors/AppointmentNotExistsError'
+import { BookingBoundsError } from '../errors/BookingBoundsError'
+import { InvalidDateError } from '../errors/InvalidDateError'
+import { InvalidParamsError } from '../errors/InvaliParamsError'
 import { InvalidSortByError } from '../errors/InvalidSortByError'
+import { InvalidStatusError } from '../errors/InvalidStatusError'
 import { MissingParametersError } from '../errors/MissingParametersError'
+import { PastDateError } from '../errors/PastDateError'
 import { UnableToUpdateError } from '../errors/UnableToUpdateError'
 
 export function handleErrorResponse(err: Error, res: Response): Response {
   if (
-    err instanceof BookingBoundsError ||
-    err instanceof PastDateError ||
     err instanceof AlreadyBookedError ||
+    err instanceof BookingBoundsError ||
     err instanceof InvalidDateError ||
-    err instanceof InvalidStatusError ||
+    err instanceof InvalidParamsError ||
     err instanceof InvalidSortByError ||
+    err instanceof InvalidStatusError ||
     err instanceof MissingParametersError ||
+    err instanceof PastDateError ||
     err instanceof UnableToUpdateError
   ) {
     return res.status(400).json({ error: err.message })
@@ -25,7 +29,9 @@ export function handleErrorResponse(err: Error, res: Response): Response {
   if (err instanceof AppointmentNotExistsError) {
     return res.status(404).json({ error: err.message })
   }
-
+  if (err instanceof ZodError) {
+    return res.status(400).json({ error: err.errors[0].message })
+  }
   console.error('Server Error:', err)
   return res.status(500).json({ error: 'Internal Server Error' })
 }
