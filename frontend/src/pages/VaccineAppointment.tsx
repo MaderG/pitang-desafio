@@ -26,7 +26,7 @@ import VaccineAppointmentSchema from '../zod';
 import { useLocalStorageManager } from '../hooks/useLocalStorageManager';
 import { useModal } from '../context/ModalContext';
 import { FORMAT_DATE, FORMAT_TIME } from '../utils/constants';
-import SuccessModal from '../components/SuccessModal';
+import SuccessModal from '../components/modal/SuccessModal';
 import { useAvailableHours } from '../hooks/useAvailableHours';
 import { useUnavailableDays } from '../hooks/useUnavailableDays';
 import fetcher from '../services/api';
