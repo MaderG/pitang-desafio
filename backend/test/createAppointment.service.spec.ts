@@ -93,6 +93,20 @@ describe('CreateAppointmentService', () => {
     )
   })
 
+  it('should throw InvalidHourError if none hour is provided', async () => {
+    const inputData: AppointmentInput = {
+      name: 'John Doe',
+      birthDate: '1990-01-01',
+      date: '2025-01-01',
+      time: '',
+      status: 'PENDING',
+    }
+    const dateObj = new Date('2025-01-01T00:00:00.000Z')
+
+    await expect(service.createAppointment(inputData, dateObj)).rejects.toThrow(
+      InvalidHourError,)
+  })
+
   it('should throw BookingBoundsError if daily limit is exceeded', async () => {
     const inputData: AppointmentInput = {
       name: 'John Doe',
