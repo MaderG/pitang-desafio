@@ -76,6 +76,38 @@ describe('ListAppointmentService', () => {
     });
   });
 
+  it('should return empty list when no appointments are found', async () => {
+    const query: AppointmentQuery = {
+      page: '1',
+      limit: '10',
+      date: '2023-01-01',
+      status: 'Pendente',
+      sortBy: 'date',
+      order: 'asc',
+    };
+
+    (prisma.appointment.findMany as jest.Mock).mockResolvedValue([]);
+    (prisma.appointment.count as jest.Mock).mockResolvedValue(0);
+    (mapStatusesToEnglish as jest.Mock).mockReturnValue(['PENDING']);
+
+    const result = await service.listAppointments(query);
+
+    expect(result.appointments).toEqual([]);
+    expect(result.totalPages).toEqual(0);
+    expect(prisma.appointment.findMany).toHaveBeenCalledWith({
+      where: {
+        date: {
+          gte: new Date('2022-12-31T03:00:00.000Z'), // alteração de data devido ao fuso do brasil
+          lte: new Date('2023-01-01T02:59:59.999Z'),
+        },
+        status: { in: ['PENDING'] },
+      },
+      take: 10,
+      skip: 0,
+      orderBy: { date: 'asc' },
+    });
+  })
+
   it('should throw InvalidDateError for invalid date format', async () => {
     const query: AppointmentQuery = {
       page: '1',
