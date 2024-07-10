@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import DatePicker, { registerLocale, setDefaultLocale } from 'react-datepicker';
 import { format, isAfter } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -31,8 +30,7 @@ import SuccessModal from '../components/SuccessModal';
 import { useAvailableHours } from '../hooks/useAvailableHours';
 import { useUnavailableDays } from '../hooks/useUnavailableDays';
 import fetcher from '../services/api';
-
-type CreateVaccineAppointmentFormValues = z.infer<typeof VaccineAppointmentSchema>;
+import { CreateVaccineAppointment } from '../types/CreateVaccineAppointment';
 
 const VaccineAppointment = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -45,7 +43,7 @@ const VaccineAppointment = () => {
     setValue,
     watch,
     trigger,
-  } = useForm<CreateVaccineAppointmentFormValues>({
+  } = useForm<CreateVaccineAppointment>({
     resolver: zodResolver(VaccineAppointmentSchema),
     mode: 'onBlur',
   });
@@ -67,7 +65,7 @@ const VaccineAppointment = () => {
       const parsedData = JSON.parse(savedData);
       for (const [key, value] of Object.entries(parsedData)) {
         const dateValue = key === 'birthDate' || key === 'date' ? new Date(value as string) : value as string | Date;
-        setValue(key as keyof CreateVaccineAppointmentFormValues, dateValue);
+        setValue(key as keyof CreateVaccineAppointment, dateValue);
 
         if (key === 'name' && value === '') {
           shouldTrigger = false;
@@ -80,7 +78,7 @@ const VaccineAppointment = () => {
 
   useLocalStorageManager(watch, isSubmitted);
 
-  const onSubmit: SubmitHandler<CreateVaccineAppointmentFormValues> = async (form: CreateVaccineAppointmentFormValues) => {
+  const onSubmit: SubmitHandler<CreateVaccineAppointment> = async (form: CreateVaccineAppointment) => {
     try {
       setLoading(true);
       await fetcher.post('/api/appointments', form);
@@ -105,7 +103,7 @@ const VaccineAppointment = () => {
   const filterTime = (time: Date) => {
     const currentDate = new Date();
     // Desabilita horários anteriores ao horário atual no mesmo dia
-    if (selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(currentDate, 'yyyy-MM-dd')) {
+    if (selectedDate && format(selectedDate, FORMAT_DATE) === format(currentDate, FORMAT_DATE)) {
       return time.getTime() > currentDate.getTime() && availableHours.includes(format(time, FORMAT_TIME));
     }
     return availableHours.includes(format(time, FORMAT_TIME));
@@ -113,10 +111,10 @@ const VaccineAppointment = () => {
 
   const excludePastDays = (date: Date) => {
     const currentDate = new Date();
-    if (format(date, 'yyyy-MM-dd') === format(currentDate, 'yyyy-MM-dd')) {
+    if (format(date, FORMAT_DATE) === format(currentDate, FORMAT_DATE)) {
       // Se todos os horários disponíveis para o dia já passaram, desabilita o dia
       const hasAvailableTimes = availableHours.some(hour => {
-        const time = new Date(`${format(date, 'yyyy-MM-dd')}T${hour}`);
+        const time = new Date(`${format(date, FORMAT_DATE)}T${hour}`);
         return isAfter(time, currentDate);
       });
       return !hasAvailableTimes;

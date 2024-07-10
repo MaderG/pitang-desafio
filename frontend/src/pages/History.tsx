@@ -20,7 +20,7 @@ import FilterModal from '../components/FilterModal';
 import { getStatusInfo } from '../utils/statusUtils';
 import { StatusValue } from '../types/Status';
 import StatusUpdateButton from '../components/StatusUpdateButton';
-
+import useAvailableDates from '../hooks/useAvailableDates';
 
 const History = () => {
   const [page, setPage] = useState<number>(1);
@@ -29,11 +29,12 @@ const History = () => {
   const [totalPages, setTotalPages] = useState<number>(0);
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [availableDates, setAvailableDates] = useState<Date[]>([]);
   const [sortBy, setSortBy] = useState<string>('date');
   const [error, setError] = useState<string | null>(null);
   const [selectedStatuses, setSelectedStatuses] = useState<string[]>(['Pendente', 'Cancelado', 'Finalizado']);
   const { showModal } = useModal();
+
+  const { availableDates, loading: datesLoading, error: datesError} = useAvailableDates();
 
   const fetchData = async () => {
     setLoading(true);
@@ -43,37 +44,23 @@ const History = () => {
       setAppointments(response.appointments);
       setTotalPages(response.totalPages);
     } catch (err) {
-      if (err instanceof Error){
+      if (err instanceof Error) {
         console.error('Failed to fetch appointments', err);
-        setError(err.message)
+        setError(err.message);
       }
-      
     }
     setLoading(false);
   };
 
   const applyFilters = () => {
-    fetchData()
-  }
-
-  const fetchAvailableDates = async () => {
-    setLoading(true);
-    try {
-      const response = await fetcher('/api/available-days');
-      const availableDates = response.map((date: string) => new Date(date + 'T00:00:00-03:00'));
-      setAvailableDates(availableDates);
-    } catch (err) {
-      console.error('Failed to fetch available days', err);
-    }
-    setLoading(false);
-  }
+    fetchData();
+  };
 
   React.useEffect(() => {
     fetchData();
-    fetchAvailableDates();
   }, [page, date, order, sortBy, selectedStatuses]);
 
-  if (loading) {
+  if (loading || datesLoading) {
     return (
       <Center minH="calc(100vh - 60px)">
         <Spinner size="xl" /> 
@@ -81,11 +68,12 @@ const History = () => {
     );
   }
 
-  if (error) {
+  if (error || datesError) {
     return (
       <Center minH='calc(100vh - 60px)'>
         <Heading as="h1" size="xl">Erro ao carregar os agendamentos :/</Heading>
-      </Center>)
+      </Center>
+    );
   }
 
   return (
@@ -160,7 +148,7 @@ const History = () => {
           <FilterModal date={date} setDate={setDate} availableDates={availableDates} applyFilters={applyFilters} selectedStatuses={selectedStatuses} setSelectedStatuses={setSelectedStatuses} />
         </TableContainer>
       </Center>
-      {!appointments && (<Heading as="h2" size="md">Nenhum agendamento encontrado</Heading>)}
+      {!appointments.length && (<Heading as="h2" size="md">Nenhum agendamento encontrado</Heading>)}
       <Box flex="1" />
       <Flex justify="center" align="center" mt="4" mb="4">
         <IconButton
