@@ -1,9 +1,9 @@
-import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, Text } from '@chakra-ui/react';
-import { useModal } from '../context/ModalContext';
+import { Button, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
+import { useModal } from '../context/ModalContext';
 
 const SuccessModal = () => {
-  const { isOpen, title, message, closeModal } = useModal();
+  const { isOpen, closeModal, title, message } = useModal();
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -20,7 +20,7 @@ const SuccessModal = () => {
         <ModalHeader>{title}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <Text>{message}</Text>
+          {message}
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" onClick={handleClick}>
