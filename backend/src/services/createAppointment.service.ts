@@ -54,7 +54,9 @@ export class CreateAppointmentService {
 
   private checkValidHour(dateObj: Date): void {
     const hour = getHours(dateObj)
-    console.log(hour)
+    if (isNaN(hour)) {
+      throw new InvalidHourError('Hora inválida')
+    }
     if (hour < 8 || hour > 17) {
       throw new InvalidHourError('Agendamento fora do horário permitido. Agende entre as 8h e as 17h.')
     }
