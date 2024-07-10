@@ -10,6 +10,7 @@ import {
   MAX_HOURLY_APPOINTMENTS,
 } from '../src/utils/constants'
 import { endOfHour, parseISO, startOfHour } from 'date-fns'
+import { InvalidHourError } from '../src/errors/InvalidHourError'
 
 jest.mock('../src/lib/prisma', () => ({
   prisma: {
@@ -25,7 +26,7 @@ const mockAppointment: Appointment = {
   id: 1,
   name: 'John Doe',
   birthDate: new Date('1990-01-01'),
-  date: new Date('2025-01-01T10:00:00.000Z'),
+  date: new Date('2025-01-01T11:00:00.000Z'),
   status: '',
 }
 
@@ -41,10 +42,10 @@ describe('CreateAppointmentService', () => {
       name: 'John Doe',
       birthDate: '1990-01-01',
       date: '2023-01-01',
-      time: '10:00',
+      time: '11:00',
       status: 'PENDING',
     }
-    const dateObj = new Date('2025-01-01T10:00:00.000Z')
+    const dateObj = new Date('2025-01-01T11:00:00.000Z')
 
     ;(prisma.appointment.create as jest.Mock).mockResolvedValue(mockAppointment)
     ;(prisma.appointment.findMany as jest.Mock).mockResolvedValue([])
@@ -67,13 +68,28 @@ describe('CreateAppointmentService', () => {
       name: 'John Doe',
       birthDate: '1990-01-01',
       date: '2022-01-01',
-      time: '10:00',
+      time: '11:00',
       status: 'PENDING',
     }
-    const dateObj = new Date('2022-01-01T10:00:00.000Z')
+    const dateObj = new Date('2022-01-01T11:00:00.000Z')
 
     await expect(service.createAppointment(inputData, dateObj)).rejects.toThrow(
       PastDateError,
+    )
+  })
+
+  it('should throw InvalidHourError if hour is outside of bounds', async () => {
+    const inputData: AppointmentInput = {
+      name: 'John Doe',
+      birthDate: '1990-01-01',
+      date: '2025-01-01',
+      time: '21:00',
+      status: 'PENDING',
+    }
+    const dateObj = new Date('2025-01-01T21:00:00.000Z')
+
+    await expect(service.createAppointment(inputData, dateObj)).rejects.toThrow(
+      InvalidHourError,
     )
   })
 
@@ -82,10 +98,10 @@ describe('CreateAppointmentService', () => {
       name: 'John Doe',
       birthDate: '1990-01-01',
       date: '2025-01-01',
-      time: '10:00',
+      time: '11:00',
       status: 'PENDING',
     }
-    const dateObj = new Date('2025-01-01T10:00:00.000Z')
+    const dateObj = new Date('2025-01-01T11:00:00.000Z')
 
     ;(prisma.appointment.findMany as jest.Mock).mockResolvedValue(
       new Array(MAX_DAILY_APPOINTMENTS),
@@ -101,10 +117,10 @@ describe('CreateAppointmentService', () => {
       name: 'John Doe',
       birthDate: '1990-01-01',
       date: '2025-01-01',
-      time: '10:00',
+      time: '11:00',
       status: 'PENDING',
     }
-    const dateObj = new Date('2025-01-01T10:00:00.000Z')
+    const dateObj = new Date('2025-01-01T11:00:00.000Z')
 
     ;(prisma.appointment.findMany as jest.Mock).mockImplementation(
       ({ where }) => {
@@ -131,10 +147,10 @@ describe('CreateAppointmentService', () => {
       name: 'John Doe',
       birthDate: '1990-01-01',
       date: '2025-01-01',
-      time: '10:00',
+      time: '11:00',
       status: 'PENDING',
     }
-    const dateObj = new Date('2025-01-01T10:00:00.000Z')
+    const dateObj = new Date('2025-01-01T11:00:00.000Z')
 
     ;(prisma.appointment.findFirst as jest.Mock).mockResolvedValue(
       mockAppointment,
