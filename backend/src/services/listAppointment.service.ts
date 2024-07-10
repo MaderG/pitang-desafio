@@ -7,7 +7,7 @@ import { InvalidDateError } from '../errors/InvalidDateError'
 import { VALID_SORT_BY, VALID_STATUSES } from '../utils/constants'
 import { InvalidStatusError } from '../errors/InvalidStatusError'
 import { InvalidSortByError } from '../errors/InvalidSortByError'
-import { InvalidParamsError } from '../errors/InvaliParamsError'
+import { InvalidParamsError } from '../errors/InvalidParamsError'
 
 export class ListAppointmentService {
   async listAppointments(
@@ -15,7 +15,7 @@ export class ListAppointmentService {
   ): Promise<{ totalPages: number; appointments: Appointment[] }> {
     const { page, limit, date, status, sortBy, order } = query
 
-
+    const parsedOrder = order === 'asc' ? 'asc' : 'desc'
     const parsedPage = this.processPageFilter(page)
     const parsedLimit = this.processLimitFilter(limit)
 
@@ -46,7 +46,7 @@ export class ListAppointmentService {
       take: parsedLimit,
       skip: (parsedPage - 1) * parsedLimit,
       orderBy: {
-        [sortBy === 'time' ? 'date' : sortBy]: order,
+        [sortBy === 'time' ? 'date' : sortBy]: parsedOrder,
       },
     })
 
