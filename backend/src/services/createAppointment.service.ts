@@ -8,6 +8,7 @@ import {
   startOfHour,
   endOfHour,
   parseISO,
+  getHours,
 } from 'date-fns'
 import { AlreadyBookedError } from '../errors/AlreadyBookedError'
 import { PastDateError } from '../errors/PastDateError'
@@ -16,6 +17,7 @@ import {
   MAX_DAILY_APPOINTMENTS,
   MAX_HOURLY_APPOINTMENTS,
 } from '../utils/constants'
+import { InvalidHourError } from '../errors/InvalidHourError'
 
 export class CreateAppointmentService {
   async createAppointment(
@@ -38,6 +40,7 @@ export class CreateAppointmentService {
     dateObj: Date,
   ): Promise<void> {
     this.checkPastDate(dateObj)
+    this.checkValidHour(dateObj)
     await this.validateExistingAppointment(inputData, dateObj)
     await this.validateDailyLimit(dateObj)
     await this.validateHourlyLimit(dateObj)
@@ -46,6 +49,14 @@ export class CreateAppointmentService {
   private checkPastDate(dateObj: Date): void {
     if (isBefore(dateObj, new Date())) {
       throw new PastDateError('Você não pode criar um agendamento no passado')
+    }
+  }
+
+  private checkValidHour(dateObj: Date): void {
+    const hour = getHours(dateObj)
+    console.log(hour)
+    if (hour < 8 || hour > 17) {
+      throw new InvalidHourError('Agendamento fora do horário permitido. Agende entre as 8h e as 17h.')
     }
   }
   private async validateDailyLimit(dateObj: Date): Promise<void> {
