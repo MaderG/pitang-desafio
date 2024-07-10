@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { AppointmentSchema } from '../zod'
-import { AppointmentQuery } from '../types/AppointmentQuery'
+import { AppointmentQuerySchema } from '../zod'
 import { constructDateTime } from '../utils/dateUtils'
 import { AppointmentInput } from '../types/AppointmentInput'
 import { createAppointmentService } from '../services/createAppointment.service'
@@ -24,28 +24,11 @@ export default class AppointmentController {
     }
   }
 
-  async index(req: Request, res: Response) {
+  async index(req: Request, res: Response): Promise<Response> {
     try {
-      const {
-        page = '1',
-        limit = '10',
-        date,
-        status,
-        sortBy = 'date',
-        order = 'asc',
-      } = req.query as Partial<AppointmentQuery>
+      const queryParams = AppointmentQuerySchema.parse(req.query)
 
-      const query: AppointmentQuery = {
-        page,
-        limit,
-        date,
-        status,
-        sortBy,
-        order,
-      }
-
-      const { totalPages, appointments } =
-        await listAppointmentService.listAppointments(query)
+      const { totalPages, appointments } = await listAppointmentService.listAppointments(queryParams);
 
       return res.status(200).json({ totalPages, appointments })
     } catch (err) {
