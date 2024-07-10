@@ -11,8 +11,8 @@ import {
   PopoverTrigger,
   PopoverContent,
   useColorModeValue,
-  useBreakpointValue,
   useDisclosure,
+  Image,
 } from '@chakra-ui/react';
 
 import { Link as ReactLink } from 'react-router-dom';
@@ -85,15 +85,8 @@ export default function Navbar() {
             aria-label={'Toggle Navigation'}
           />
         </Flex>
-        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }}>
-          <Text
-            textAlign={useBreakpointValue({ base: 'center', md: 'left' })}
-            fontFamily={'heading'}
-            color={useColorModeValue('gray.800', 'white')}
-          >
-            Pita.ng
-          </Text>
-
+        <Flex flex={{ base: 1 }} justify={{ base: 'center', md: 'start' }} align={'center'}>
+          <Image maxH="15px" src='pitang_logo.png' alt="Logo da Pitang" />
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
             <DesktopNav routes={memoizedRoutes} />
           </Flex>
