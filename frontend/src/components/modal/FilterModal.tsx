@@ -15,12 +15,13 @@ import {
   Checkbox,
   Input,
   VStack,
-  HStack
+  HStack,
+  Image
 } from '@chakra-ui/react';
 
-import { useModal } from '../context/ModalContext';
-import { FORMAT_DATE } from '../utils/constants';
-import { FilterModalProps } from '../types/FilterModalProps';
+import { useModal } from '../../context/ModalContext';
+import { FORMAT_DATE } from '../../utils/constants';
+import { FilterModalProps } from '../../types/FilterModalProps';
 
 
 const FilterModal = ({date, setDate, availableDates, selectedStatuses, setSelectedStatuses, applyFilters}: FilterModalProps) => {
@@ -73,8 +74,9 @@ const FilterModal = ({date, setDate, availableDates, selectedStatuses, setSelect
                 includeDates={availableDates}
                 locale="pt-br"
                 dateFormat={FORMAT_DATE}
-                customInput={<Input />}
+                customInput={<Input maxW="350px" />}
               />
+              <Image cursor="pointer" onClick={() => setTempDate(null)} maxW="25px" src="broom.svg" position="absolute" right="40px" bottom="160px"/>
             </VStack>
             <VStack align="left">
               <Text>Status do Agendamento:</Text>
@@ -82,6 +84,7 @@ const FilterModal = ({date, setDate, availableDates, selectedStatuses, setSelect
                 {['Pendente', 'Cancelado', 'Finalizado'].map(status => (
                   <Checkbox
                     key={status}
+                    colorScheme="orange"
                     isChecked={tempStatuses.includes(status)}
                     onChange={(e) => handleStatusChange(status, e.target.checked)}
                   >
@@ -93,7 +96,9 @@ const FilterModal = ({date, setDate, availableDates, selectedStatuses, setSelect
           </VStack>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" onClick={handleApplyFilters}>Aplicar Filtros</Button>
+          <Button bg="#da4c44" color="white"  _hover={{bg: '#d03e35'}}onClick={handleApplyFilters}>
+            Aplicar Filtros
+            </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
