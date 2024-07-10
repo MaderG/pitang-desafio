@@ -16,7 +16,7 @@ import formatDate from '../utils/formatDate';
 import formatTime from '../utils/formatTime';
 import { Appointment } from '../types/Appointment';
 import { useModal } from '../context/ModalContext';
-import FilterModal from '../components/FilterModal';
+import FilterModal from '../components/modal/FilterModal';
 import { getStatusInfo } from '../utils/statusUtils';
 import { StatusValue } from '../types/Status';
 import StatusUpdateButton from '../components/StatusUpdateButton';
@@ -152,7 +152,9 @@ const History = () => {
       <Box flex="1" />
       <Flex justify="center" align="center" mt="4" mb="4">
         <IconButton
-          colorScheme='blue'
+          bg="#da4c44" 
+          color="white"  
+          _hover={{bg: '#d03e35'}}
           aria-label="Previous"
           icon={<ChevronLeftIcon />}
           onClick={() => setPage(page - 1)}
@@ -160,7 +162,9 @@ const History = () => {
         />
         <Text mx="4">{page}</Text>
         <IconButton
-          colorScheme='blue'
+          bg="#da4c44" 
+          color="white"  
+          _hover={{bg: '#d03e35'}}
           aria-label="Next"
           icon={<ChevronRightIcon />}
           onClick={() => setPage(page + 1)}
