@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-
 import {
     Button,
     Modal,
@@ -32,8 +31,8 @@ const FilterModal = ({
     applyFilters,
 }: FilterModalProps) => {
     const { isOpen, closeModal, title, message } = useModal()
-    const [tempDate, setTempDate] = useState(date)
-    const [tempStatuses, setTempStatuses] = useState([...selectedStatuses])
+    const [tempDate, setTempDate] = useState<Date | null>(date)
+    const [tempStatuses, setTempStatuses] = useState<string[]>([...selectedStatuses])
 
     const handleApplyFilters = () => {
         setDate(tempDate)
@@ -67,19 +66,20 @@ const FilterModal = ({
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>{title}</ModalHeader>
-                <ModalCloseButton />
+                <ModalCloseButton data-testid='close-button' />
                 <ModalBody>
                     <Text>{message}</Text>
                     <VStack spacing={4} align="stretch">
                         <VStack align="left">
                             <Text>Data de Agendamento:</Text>
                             <DatePicker
+                                data-testid="date-picker"
                                 selected={tempDate}
                                 onChange={handleDateChange}
                                 includeDates={availableDates}
                                 locale="pt-br"
                                 dateFormat={FORMAT_DATE}
-                                customInput={<Input maxW="350px" />}
+                                customInput={<Input data-testid='input' maxW="350px" />}
                             />
                             <Image
                                 cursor="pointer"
