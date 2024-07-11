@@ -33,7 +33,7 @@ const SortableHeader: React.FC<SortableHeaderProps> = ({
         >
             {label}{' '}
             {isActive &&
-                (order === 'asc' ? <ChevronUpIcon /> : <ChevronDownIcon />)}
+                (order === 'asc' ? <ChevronUpIcon data-testid="chevron-up-icon" /> : <ChevronDownIcon data-testid="chevron-down-icon" />)}
         </Th>
     )
 }

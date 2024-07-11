@@ -19,7 +19,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 
 import fetcher from '../services/api'
-import SortableHeader from '../components/SortableHeaders'
+import SortableHeader from '../components/SortableHeader.tsx'
 import { SortOrder } from '../types/SortableHeaderProps'
 import formatDate from '../utils/formatDate'
 import formatTime from '../utils/formatTime'
