@@ -52,11 +52,11 @@ const StatusUpdateButton: React.FC<StatusUpdateButtonProps> = ({
                 {currentStatus}
             </MenuButton>
             <MenuList>
-                <MenuItem onClick={() => handleStatusChange('Pendente')}>
-                    Pendente
-                </MenuItem>
                 <MenuItem onClick={() => handleStatusChange('Cancelado')}>
                     Cancelado
+                </MenuItem>
+                <MenuItem onClick={() => handleStatusChange('Pendente')}>
+                    Pendente
                 </MenuItem>
                 <MenuItem onClick={() => handleStatusChange('Finalizado')}>
                     Finalizado
