@@ -1,54 +1,69 @@
-import { ChevronDownIcon } from '@chakra-ui/icons';
-import { Menu, MenuButton, MenuList, MenuItem, Button, useToast } from '@chakra-ui/react';
-import fetcher from '../services/api';
-import { StatusUpdateButtonProps } from '../types/StatusUpdateButtonProps';
+import { ChevronDownIcon } from '@chakra-ui/icons'
+import {
+    Menu,
+    MenuButton,
+    MenuList,
+    MenuItem,
+    Button,
+    useToast,
+} from '@chakra-ui/react'
+import fetcher from '../services/api'
+import { StatusUpdateButtonProps } from '../types/StatusUpdateButtonProps'
 
+const StatusUpdateButton: React.FC<StatusUpdateButtonProps> = ({
+    id,
+    currentStatus,
+    fetchData,
+}) => {
+    const toast = useToast()
 
-const StatusUpdateButton: React.FC<StatusUpdateButtonProps> = ({ id, currentStatus, fetchData }) => {
-
-  const toast = useToast();
-
-  const updateStatus = async (id: string, status: string) => {
-    try {
-      await fetcher.put(`/api/appointments/${id}`, {
-        status,
-      });
-      toast({
-        title: 'Status atualizado com sucesso',
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
-      })
-      fetchData();
-    } catch (err) {
-      if (err instanceof Error){
-        toast({
-          title: 'Erro ao atualizar status',
-          description: err.message,
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        })
+    const updateStatus = async (id: string, status: string) => {
+        try {
+            await fetcher.put(`/api/appointments/${id}`, {
+                status,
+            })
+            toast({
+                title: 'Status atualizado com sucesso',
+                status: 'success',
+                duration: 5000,
+                isClosable: true,
+            })
+            fetchData()
+        } catch (err) {
+            if (err instanceof Error) {
+                toast({
+                    title: 'Erro ao atualizar status',
+                    description: err.message,
+                    status: 'error',
+                    duration: 5000,
+                    isClosable: true,
+                })
+            }
+        }
     }
+
+    const handleStatusChange = (newStatus: string) => {
+        updateStatus(id, newStatus)
     }
-  };
 
-  const handleStatusChange = (newStatus: string) => {
-    updateStatus(id, newStatus);
-  };
+    return (
+        <Menu>
+            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                {currentStatus}
+            </MenuButton>
+            <MenuList>
+                <MenuItem onClick={() => handleStatusChange('Pendente')}>
+                    Pendente
+                </MenuItem>
+                <MenuItem onClick={() => handleStatusChange('Cancelado')}>
+                    Cancelado
+                </MenuItem>
+                <MenuItem onClick={() => handleStatusChange('Finalizado')}>
+                    Finalizado
+                </MenuItem>
+            </MenuList>
+        </Menu>
+    )
+}
 
-  return (
-    <Menu>
-      <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-        {currentStatus}
-      </MenuButton>
-      <MenuList>
-        <MenuItem onClick={() => handleStatusChange('Pendente')}>Pendente</MenuItem>
-        <MenuItem onClick={() => handleStatusChange('Cancelado')}>Cancelado</MenuItem>
-        <MenuItem onClick={() => handleStatusChange('Finalizado')}>Finalizado</MenuItem>
-      </MenuList>
-    </Menu>
-  );
-};
-
-export default StatusUpdateButton;
+export default StatusUpdateButton

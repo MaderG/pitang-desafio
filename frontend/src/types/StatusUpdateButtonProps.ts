@@ -1,5 +1,5 @@
 export type StatusUpdateButtonProps = {
-  id: string;
-  currentStatus: string;
-  fetchData: () => void;
+    id: string
+    currentStatus: string
+    fetchData: () => void
 }
