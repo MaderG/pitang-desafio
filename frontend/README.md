@@ -6,7 +6,6 @@ Este repositório contém o frontend de uma aplicação para agendamentos de vac
 
 -   **Agendamento de Vacinas:** Permite aos usuários selecionar uma vacina, escolher uma data e horário disponíveis.
 -   **Visualização de Agendamentos:** Exibe uma lista de agendamentos atuais e permite gerenciar esses agendamentos.
--   **Histórico de Vacinas:** Mostra um histórico detalhado das vacinas que o usuário já tomou.
 -   **Atualização de Status:** Os usuários podem atualizar o status dos seus agendamentos (por exemplo, marcar como concluído).
 -   **Filtros e Ordenação:** Inclui modais e cabeçalhos de tabelas que permitem filtrar e ordenar os dados apresentados.
 -   **Notificações de Sucesso:** Exibe mensagens de sucesso após ações bem-sucedidas, como a confirmação de um agendamento.
@@ -86,13 +85,13 @@ Schemas de validação utilizando a biblioteca Zod para garantir que os dados re
 1. Clone o repositório:
 
     ```sh
-    git clone https://github.com/usuario/vaccine-appointment-frontend.git
+    git clone https://github.com/MaderG/pitang-desafio/tree/main
     ```
 
 2. Instale as dependências:
 
     ```sh
-    cd vaccine-appointment-frontend
+    cd pitang-desafio
     npm install
     ```
 
