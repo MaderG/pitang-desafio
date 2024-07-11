@@ -1,4 +1,4 @@
-import { BrowserRouter, Outlet, Route, Routes,  } from 'react-router-dom'
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
 import VaccineAppointment from './pages/VaccineAppointment'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
@@ -9,29 +9,33 @@ import React from 'react'
 import Footer from './components/Footer'
 
 const App = () => {
+    React.useEffect(() => {
+        registerLocale('pt-br', ptBR)
+        setDefaultLocale('pt-br')
+    })
 
-  React.useEffect(() => {
-    registerLocale('pt-br', ptBR)
-    setDefaultLocale('pt-br')
-  })
-
-  return (
-    <BrowserRouter>
-    <Routes>
-      <Route element={
-        <>
-          <Navbar /> 
-          <Outlet />
-          <Footer />
-        </>
-      }>
-        <Route element={<Home />} path="/" />
-        <Route element={<VaccineAppointment />} path="/vaccine-appointment"/>
-        <Route element={<History />} path="/appointments" />
-      </Route>
-    </Routes>
-    </BrowserRouter>
-  )
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route
+                    element={
+                        <>
+                            <Navbar />
+                            <Outlet />
+                            <Footer />
+                        </>
+                    }
+                >
+                    <Route element={<Home />} path="/" />
+                    <Route
+                        element={<VaccineAppointment />}
+                        path="/vaccine-appointment"
+                    />
+                    <Route element={<History />} path="/appointments" />
+                </Route>
+            </Routes>
+        </BrowserRouter>
+    )
 }
 
 export default App

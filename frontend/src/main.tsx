@@ -5,12 +5,11 @@ import { ChakraProvider } from '@chakra-ui/react'
 import { ModalProvider } from './context/ModalContext.tsx'
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ModalProvider>
-      <ChakraProvider>
-        <App />
-      </ChakraProvider>
-    </ModalProvider>
-  </React.StrictMode>
-  ,
+    <React.StrictMode>
+        <ModalProvider>
+            <ChakraProvider>
+                <App />
+            </ChakraProvider>
+        </ModalProvider>
+    </React.StrictMode>
 )
