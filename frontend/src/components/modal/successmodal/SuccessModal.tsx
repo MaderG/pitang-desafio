@@ -9,7 +9,7 @@ import {
     ModalCloseButton,
 } from '@chakra-ui/react'
 import { useNavigate } from 'react-router-dom'
-import { useModal } from '../../context/ModalContext'
+import { useModal } from '../../../context/ModalContext'
 
 const SuccessModal = () => {
     const { isOpen, closeModal, title, message } = useModal()

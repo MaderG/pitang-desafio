@@ -18,9 +18,9 @@ import {
     Image,
 } from '@chakra-ui/react'
 
-import { useModal } from '../../context/ModalContext'
-import { FORMAT_DATE } from '../../utils/constants'
-import { FilterModalProps } from '../../types/FilterModalProps'
+import { useModal } from '../../../context/ModalContext'
+import { FORMAT_DATE } from '../../../utils/constants'
+import { FilterModalProps } from '../../../types/FilterModalProps'
 
 const FilterModal = ({
     date,

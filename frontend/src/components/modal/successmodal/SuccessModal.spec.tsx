@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import SuccessModal from './SuccessModal';
-import { ModalProvider, useModal } from '../../context/ModalContext';
+import { ModalProvider, useModal } from '../../../context/ModalContext';
 
 const TestComponent = () => {
   const { showModal } = useModal();

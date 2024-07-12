@@ -1,6 +1,6 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import FilterModal from './FilterModal';
-import { ModalProvider, useModal } from '../../context/ModalContext';
+import { ModalProvider, useModal } from '../../../context/ModalContext';
 
 const mockProps = {
   date: null,
