@@ -18,18 +18,18 @@ import {
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
-import fetcher from '../services/api';
-import SortableHeader from '../components/SortableHeader';
-import { SortOrder } from '../types/SortableHeaderProps';
-import formatDate from '../utils/formatDate';
-import formatTime from '../utils/formatTime';
-import { Appointment } from '../types/Appointment';
-import { useModal } from '../context/ModalContext';
-import FilterModal from '../components/modal/FilterModal';
-import { getStatusInfo } from '../utils/statusUtils';
-import { StatusValue } from '../types/Status';
-import StatusUpdateButton from '../components/StatusUpdateButton';
-import useAvailableDates from '../hooks/useAvailableDates';
+import fetcher from '../../services/api';
+import SortableHeader from '../../components/sortableHeader/SortableHeader';
+import { SortOrder } from '../../types/SortableHeaderProps';
+import formatDate from '../../utils/formatDate';
+import formatTime from '../../utils/formatTime';
+import { Appointment } from '../../types/Appointment';
+import { useModal } from '../../context/ModalContext';
+import FilterModal from '../../components/modal/filtermodal/FilterModal';
+import { getStatusInfo } from '../../utils/statusUtils';
+import { StatusValue } from '../../types/Status';
+import StatusUpdateButton from '../../components/statusUpdateButton/StatusUpdateButton';
+import useAvailableDates from '../../hooks/useAvailableDates';
 
 const History = () => {
   const [page, setPage] = useState<number>(1);
