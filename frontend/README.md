@@ -59,14 +59,7 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
       - **vaccineAppointment/**: Página VaccineAppointment para agendar novas vacinas.
     - **services/**
       - **api.ts**: Serviço para comunicação com o backend.
-    - **types/**: Contém definições de tipos TypeScript.
-      - **Appointment.ts**: Definição de tipo para Appointment.
-      - **CreateVaccineAppointment.ts**: Definição de tipo para CreateVaccineAppointment.
-      - **FilterModalProps.ts**: Definição de tipo para as propriedades de FilterModal.
-      - **ModalContextType.ts**: Definição de tipo para ModalContext.
-      - **SortableHeaderProps.ts**: Definição de tipo para as propriedades de SortableHeader.
-      - **Status.ts**: Definição de tipo para Status.
-      - **StatusUpdateButtonProps.ts**: Definição de tipo para as propriedades de StatusUpdateButton.
+    - **types/**: Contém definições de tipos TypeScript como `CreateVaccineAppointment.ts` e `SortableHeaderProps.ts`.
     - **utils/**: Utilitários gerais usados na aplicação.
       - **constants/**
         - **index.ts**: Contém constantes utilizadas na aplicação.
