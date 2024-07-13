@@ -74,14 +74,23 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
     npm install
     ```
 
+    Certifique-se de que todas as dependências do Prisma estão listadas no `package.json`.
+
 3. Configure o banco de dados e variáveis de ambiente:
     - Crie um arquivo `.env` na raiz do projeto e adicione as variáveis de ambiente necessárias, conforme o exemplo fornecido em `.env.example`.
+    - Adicione as seguintes variáveis de ambiente, conforme o exemplo fornecido em `.env.example`:
+      ```sh
+      PORT= <porta em que sua aplicação irá rodar>
+      DATABASE_URL= <URL de conexão com seu banco de dados>
+      ```
 
 4. Gere o cliente Prisma:
 
-  ```sh
+    ```sh
     npm run prisma:generate
     ```
+
+    Este comando gera o cliente Prisma necessário para interagir com o banco de dados a partir do seu esquema Prisma.
 
 5. Execute as migrações do banco de dados:
 
@@ -89,10 +98,14 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
     npm run prisma:migrate
     ```
 
+    Este comando aplica as migrações ao seu banco de dados, estruturando-o conforme definido em seus arquivos de migração.
+
 6. Inicie a aplicação:
     ```sh
     npm start
     ```
+    
+    Inicia o servidor na porta especificada no arquivo `.env`.
 
 A API estará disponível em `http://localhost:PORT`.
 
@@ -104,28 +117,28 @@ Este projeto inclui testes unitários e de integração para garantir a qualidad
 
 Para executar todos os testes, utilize o comando:
 
-```sh
-npm run test
-```
+  ```sh
+  npm run test
+  ```
 
 ### Cobertura de Testes
 Para gerar um relatório de cobertura de testes, utilize o comando:
-```sh
-npm run test:coverage
-```
+  ```sh
+  npm run test:coverage
+  ```
 Isso irá gerar um relatório detalhado sobre a cobertura dos testes, indicando quais partes do código foram testadas e quais não foram.
 
 ### Exemplo de testes
 Aqui estão alguns exemplos de comandos para executar testes específicos:
 
 - Executar um teste específico:
-```sh
-npm run test src/test/appointment.controller
-```
+    ```sh
+    npm run test src/test/appointment.controller
+    ```
 
 - Executar testes em modo watch (para desenvolvimento contínuo):
-```sh
-npm run test:watch
-```
+    ```sh
+    npm run test:watch
+    ```
 
 ---
