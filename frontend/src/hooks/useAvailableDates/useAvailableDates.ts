@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import fetcher from '../services/api'
+import fetcher from '../../services/api'
 
 const useAvailableDates = () => {
     const [availableDates, setAvailableDates] = useState<Date[]>([])
