@@ -7,7 +7,7 @@ export const useUnavailableDays = () => {
     useEffect(() => {
         const fetchUnavailableDays = async () => {
             try {
-                const response: string[] = await fetcher(
+                const response: string[] = await fetcher.get(
                     '/api/unavailable-days'
                 )
                 const unavailableDays: Date[] = response.map(

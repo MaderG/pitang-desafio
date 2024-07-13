@@ -8,7 +8,7 @@ export const useAvailableHours = (date: Date) => {
         const fetchAvailableHours = async () => {
             try {
                 const dateString = date.toISOString().split('T')[0]
-                const response: string[] = await fetcher(
+                const response: string[] = await fetcher.get(
                     `/api/available-times?date=${dateString}`
                 )
                 setAvailableHours(response)

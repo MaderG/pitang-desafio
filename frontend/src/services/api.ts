@@ -13,6 +13,10 @@ async function fetcher(url: URL | string, options: RequestInit = {}) {
     throw new Error(data.error)
 }
 
+fetcher.get = function (url: URL | string) {
+    return fetcher(url)
+}
+
 fetcher.post = async function (url: URL | string, data: VaccineAppointment) {
     return fetcher(url, {
         method: 'POST',
