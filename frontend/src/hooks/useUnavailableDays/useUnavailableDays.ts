@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
-import fetcher from '../services/api'
+import fetcher from '../../services/api'
 
 export const useUnavailableDays = () => {
     const [unavailableDays, setUnavailableDays] = useState<Date[]>([])
-
     useEffect(() => {
         const fetchUnavailableDays = async () => {
             try {
