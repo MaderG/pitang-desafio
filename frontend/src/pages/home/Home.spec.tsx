@@ -2,8 +2,8 @@ import { render, screen } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 import Home from './Home'
 
-describe('Home Component', () => {
-    it('renders without crashing', () => {
+describe('<Home />', () => {
+    it('should render', () => {
         render(
             <BrowserRouter>
                 <Home />
@@ -12,7 +12,7 @@ describe('Home Component', () => {
         expect(screen.getByText('Portal de Vacinação')).toBeInTheDocument()
     })
 
-    it('displays the correct text', () => {
+    it('should display the correct text', () => {
         render(
             <BrowserRouter>
                 <Home />
@@ -25,15 +25,14 @@ describe('Home Component', () => {
         ).toBeInTheDocument()
     })
 
-    it('contains a link to vaccine appointment page', () => {
+    it('should contain a link to vaccine appointment page', () => {
         render(
             <BrowserRouter>
                 <Home />
             </BrowserRouter>
         )
-        expect(screen.getByRole('link', { name: 'Agende sua vacina' })).toHaveAttribute(
-            'href',
-            '/vaccine-appointment'
-        )
+        expect(
+            screen.getByRole('link', { name: 'Agende sua vacina' })
+        ).toHaveAttribute('href', '/vaccine-appointment')
     })
 })

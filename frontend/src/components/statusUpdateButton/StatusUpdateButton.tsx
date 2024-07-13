@@ -51,17 +51,30 @@ const StatusUpdateButton: React.FC<StatusUpdateButtonProps> = ({
 
     return (
         <Menu>
-            <MenuButton data-testid="currentStatus" as={Button} rightIcon={<ChevronDownIcon />}>
+            <MenuButton
+                data-testid="currentStatus"
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+            >
                 {currentStatus}
             </MenuButton>
             <MenuList>
-                <MenuItem  data-testid="menu-item-Cancelado"onClick={() => handleStatusChange('Cancelado')}>
+                <MenuItem
+                    data-testid="menu-item-Cancelado"
+                    onClick={() => handleStatusChange('Cancelado')}
+                >
                     Cancelado
                 </MenuItem>
-                <MenuItem data-testid="menu-item-Pendente" onClick={() => handleStatusChange('Pendente')}>
+                <MenuItem
+                    data-testid="menu-item-Pendente"
+                    onClick={() => handleStatusChange('Pendente')}
+                >
                     Pendente
                 </MenuItem>
-                <MenuItem data-testid="menu-item-Finalizado" onClick={() => handleStatusChange('Finalizado')}>
+                <MenuItem
+                    data-testid="menu-item-Finalizado"
+                    onClick={() => handleStatusChange('Finalizado')}
+                >
                     Finalizado
                 </MenuItem>
             </MenuList>
