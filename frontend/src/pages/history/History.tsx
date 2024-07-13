@@ -154,14 +154,7 @@ const History = () => {
                                         setSortBy={setSortBy}
                                         setOrder={setOrder}
                                     />
-                                    <SortableHeader
-                                        field="status"
-                                        label="Status"
-                                        sortBy={sortBy}
-                                        order={order as SortOrder}
-                                        setSortBy={setSortBy}
-                                        setOrder={setOrder}
-                                    />
+                                    <Th minW="140px">Status</Th>
                                     <SortableHeader
                                         field="time"
                                         label="Hora"
