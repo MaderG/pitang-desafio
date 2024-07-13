@@ -86,6 +86,8 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
     npm install
     ```
 
+    Certifique-se de que todas as dependências do Prisma estão listadas no `package.json`.
+
 3. Crie um arquivo `.env` na raiz do projeto e adicione a URL do backend:
 
     ```sh

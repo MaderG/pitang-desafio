@@ -77,13 +77,19 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
 3. Configure o banco de dados e variáveis de ambiente:
     - Crie um arquivo `.env` na raiz do projeto e adicione as variáveis de ambiente necessárias, conforme o exemplo fornecido em `.env.example`.
 
-4. Execute as migrações do banco de dados:
+4. Gere o cliente Prisma:
+
+  ```sh
+    npm run prisma:generate
+    ```
+
+5. Execute as migrações do banco de dados:
 
     ```sh
     npm run prisma:migrate
     ```
 
-5. Inicie a aplicação:
+6. Inicie a aplicação:
     ```sh
     npm start
     ```
