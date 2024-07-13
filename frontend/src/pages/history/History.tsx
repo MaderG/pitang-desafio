@@ -29,7 +29,7 @@ import FilterModal from '../../components/modal/filtermodal/FilterModal'
 import { getStatusInfo } from '../../utils/statusUtils'
 import { StatusValue } from '../../types/Status'
 import StatusUpdateButton from '../../components/statusUpdateButton/StatusUpdateButton'
-import useAvailableDates from '../../hooks/useAvailableDates'
+import useAvailableDates from '../../hooks/useAvailableDates/useAvailableDates'
 
 const History = () => {
     const [page, setPage] = useState<number>(1)

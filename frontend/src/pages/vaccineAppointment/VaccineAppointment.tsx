@@ -23,12 +23,12 @@ import {
 import { CalendarIcon } from '@chakra-ui/icons'
 
 import VaccineAppointmentSchema from '../../zod'
-import { useLocalStorageManager } from '../../hooks/useLocalStorageManager'
+import { useLocalStorageManager } from '../../hooks/useLocalStorageManager/useLocalStorageManager'
 import { useModal } from '../../context/ModalContext'
 import { FORMAT_DATE, FORMAT_TIME } from '../../utils/constants'
 import SuccessModal from '../../components/modal/successmodal/SuccessModal'
-import { useAvailableHours } from '../../hooks/useAvailableHours'
-import { useUnavailableDays } from '../../hooks/useUnavailableDays'
+import { useAvailableHours } from '../../hooks/useAvailableHours/useAvailableHours'
+import { useUnavailableDays } from '../../hooks/useUnavailableDays/useUnavailableDays'
 import fetcher from '../../services/api'
 import { CreateVaccineAppointment } from '../../types/CreateVaccineAppointment'
 
