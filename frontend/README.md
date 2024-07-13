@@ -7,9 +7,7 @@ Este repositório contém o frontend de uma aplicação para agendamentos de vac
 - [Sobre](#sobre)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Funcionalidades](#funcionalidades)
-- [Páginas](#páginas)
-- [Principais Componentes](#principais-componentes)
-- [Outros](#outros)
+- [Estrutura de Pastas](#estrutura-de-pastas)
 - [Como Executar](#como-executar)
 - [Testes](#testes)
 
@@ -33,75 +31,52 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
 -   **Filtros e Ordenação:** Inclui modais e cabeçalhos de tabelas que permitem filtrar e ordenar os dados apresentados.
 -   **Notificações de Sucesso:** Exibe mensagens de sucesso após ações bem-sucedidas, como a confirmação de um agendamento.
 
-## Páginas
+## Estrutura de Pastas
 
-### Home.tsx
-
-A página inicial oferece uma visão geral dos agendamentos de vacinas. Nela, os usuários podem ver 
-
-### VaccineAppointment.tsx
-
-Esta página permite que os usuários agendem novas vacinas. Inclui formulários para selecionar a vacina, data e horário desejados.
-
-### History.tsx
-
-A página de histórico exibe a lista de agendamentos feitos. Onde o usuário pode visualizar o nome, status, hora, data e ações. Nela, o usuário pode atualizar o status do agendamento. Filtrar por dia e status. E ordenar por nome, data, hora(quando um dia é selecionado), 
-
-## Principais Componentes
-
-### Modal Components
-
-Os componentes de modal são utilizados para exibir janelas modais na aplicação.
-
-#### FilterModal.tsx
-
-Um modal utilizado para filtrar dados do agendamento, permitindo uma busca mais refinada.
-
-#### SuccessModal.tsx
-
-Um modal para exibição de mensagens de sucesso, utilizado para informar o usuário sobre o sucesso no agendamento.
-
-### Navbar.tsx
-
-A barra de navegação principal que permite aos usuários navegar entre as diferentes páginas da aplicação.
-
-### Footer.tsx
-
-O rodapé da aplicação, que contém informações adicionais.
-
-### SortableHeaders.tsx
-
-Componentes para cabeçalhos de tabelas que podem ser ordenados, facilitando a organização dos dados apresentados.
-
-### StatusUpdateButton.tsx
-
-Um botão para atualizar o status dos agendamentos, permitindo que os usuários modifiquem o estado de suas marcações.
-
-## Outros
-
-### context
-
-Este diretório contém o ModelContext que é utilizado para gerenciar o estado dos modais na aplicação. Ele fornece funcionalidades para abrir e fechar modais, além de definir o título e a mensagem do modal.
-
-### hooks
-
-Aqui estão os custom hooks que encapsulam lógica reutilizável, facilitando a manutenção e a leitura do código.
-
-### services
-
-O serviço para comunicação com o backend está neste diretório. Ele gerencia todas as requisições HTTP necessárias para a aplicação.
-
-### utils
-
-Utilitários gerais usados na aplicação, incluindo funções auxiliares e constantes.
-
-### types
-
-Definições de tipos TypeScript utilizados em toda a aplicação para garantir a tipagem estática e reduzir erros.
-
-### zod
-
-Schemas de validação utilizando a biblioteca Zod para garantir que os dados recebidos e enviados estão no formato correto.
+- **frontend/**
+  - **public/**: Contém arquivos svg para estilização das páginas.
+  - **src/**: Código-fonte do projeto.
+    - **components/**: Contém os componentes reutilizáveis e seus testes.
+      - **footer/** Componente Footer.
+      - **modal/**  Componentes de modais.
+        - **filtermodal/** Contém o componente FilterModal para filtrar dados do agendameto.
+        - **successmodal/** Contém o componente SuccessModal para exibição de mensagens de sucesso.
+      - **navbar/** Componente Navbar para navegação principal.
+      - **sortableHeader/**: Componentes para cabeçalhos ordenáveis.
+      - **statusUpdateButton/**: Botão de atualização de status.
+    - **context/**
+      - **ModalContext.tsx**: Contexto para gerenciar o estado dos modais na aplicação.
+    - **env/**
+      - **env.ts**: Configurações de variáveis de ambiente.
+    - **hooks/**: Hooks customizados e seus testes.
+      - **useAvailableDates/** Hook useAvailableDates para gerenciar datas disponíveis.
+      - **useAvailableHours/**: Hook useAvailableHours para gerenciar horas disponíveis.
+      - **useLocalStorageManager/**: Hook useLocalStorageManager para gerenciar dados no local storage.
+      - **useUnavailableDays/**: Hook useUnavailableDays para gerenciar dias indisponíveis.
+    - **pages/**: Contém as páginas da aplicação e seus testes.
+      - **history/** Página History para visualização de agendamentos feitos.
+      - **home/**: Página Home para visão geral dos agendamentos de vacinas.
+      - **vaccineAppointment/**: Página VaccineAppointment para agendar novas vacinas.
+    - **services/**
+      - **api.ts**: Serviço para comunicação com o backend.
+    - **types/**: Contém definições de tipos TypeScript.
+      - **Appointment.ts**: Definição de tipo para Appointment.
+      - **CreateVaccineAppointment.ts**: Definição de tipo para CreateVaccineAppointment.
+      - **FilterModalProps.ts**: Definição de tipo para as propriedades de FilterModal.
+      - **ModalContextType.ts**: Definição de tipo para ModalContext.
+      - **SortableHeaderProps.ts**: Definição de tipo para as propriedades de SortableHeader.
+      - **Status.ts**: Definição de tipo para Status.
+      - **StatusUpdateButtonProps.ts**: Definição de tipo para as propriedades de StatusUpdateButton.
+    - **utils/**: Utilitários gerais usados na aplicação.
+      - **constants/**
+        - **index.ts**: Contém constantes utilizadas na aplicação.
+      - **formatDate.ts**: Função para formatar datas.
+      - **formatTime.ts**: Função para formatar horas.
+      - **statusUtils.ts**: Utilitários para manipulação de status.
+    - **zod/**: Contém schemas de validação utilizando Zod.
+    - **App.tsx**: Componente principal da aplicação.
+    - **main.tsx**: Arquivo de entrada principal.
+    - **setupTests.ts**: Configuração para os testes.
 
 ## Como Executar
 
@@ -168,3 +143,5 @@ Os testes abrangem várias partes da aplicação, incluindo:
 - **Hooks:** Testes para verificar a lógica encapsulada em hooks personalizados.
 - **Páginas:** Testes para assegurar que as páginas renderizem e funcionem conforme esperado.
 - **Serviços:** Testes para validar as funções de comunicação com o backend.
+
+---
