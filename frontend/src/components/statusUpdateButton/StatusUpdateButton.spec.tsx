@@ -16,7 +16,7 @@ const renderStatusUpdateButton = (props: StatusUpdateButtonProps) => {
 
 describe('<StatusUpdateButton />', () => {
     beforeEach(() => {
-        ;(fetcher.put as jest.Mock).mockClear()
+        (fetcher.put as jest.Mock).mockClear()
     })
 
     it('should render correctly', () => {
@@ -31,7 +31,7 @@ describe('<StatusUpdateButton />', () => {
     })
 
     it('should update status when a new status is selected', async () => {
-        ;(fetcher.put as jest.Mock).mockResolvedValue({ ok: true })
+        (fetcher.put as jest.Mock).mockResolvedValue({ ok: true })
 
         const fetchData = jest.fn()
         const { getByTestId } = renderStatusUpdateButton({
@@ -62,7 +62,7 @@ describe('<StatusUpdateButton />', () => {
     })
 
     it('should display error toast on API failure', async () => {
-        ;(fetcher.put as jest.Mock).mockRejectedValue(
+        (fetcher.put as jest.Mock).mockRejectedValue(
             new Error('Failed to update status')
         )
 
@@ -83,7 +83,7 @@ describe('<StatusUpdateButton />', () => {
     })
 
     it('should call fetch with the correct parameters on status change', async () => {
-        ;(fetcher.put as jest.Mock).mockResolvedValue({ ok: true })
+        (fetcher.put as jest.Mock).mockResolvedValue({ ok: true })
 
         const fetchData = jest.fn()
         const { getByTestId } = renderStatusUpdateButton({

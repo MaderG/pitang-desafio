@@ -34,7 +34,7 @@ describe('<VaccineAppointment />', () => {
     })
 
     it('should handle form submission successfully', async () => {
-        ;(fetcher.get as jest.Mock).mockResolvedValue({
+        (fetcher.get as jest.Mock).mockResolvedValue({
             availableHours: mockAvailableHours,
             unavailableDays: mockUnavailableDays,
         })
@@ -81,7 +81,7 @@ describe('<VaccineAppointment />', () => {
     })
 
     it('should handle form submission error', async () => {
-        ;(fetcher.get as jest.Mock).mockResolvedValue({
+        (fetcher.get as jest.Mock).mockResolvedValue({
             availableHours: mockAvailableHours,
             unavailableDays: mockUnavailableDays,
         })
@@ -219,7 +219,7 @@ describe('<VaccineAppointment />', () => {
     })
 
     it('should open modal if data is submitted and form is valid', async () => {
-        ;(fetcher.get as jest.Mock).mockResolvedValue({
+        (fetcher.get as jest.Mock).mockResolvedValue({
             availableHours: mockAvailableHours,
             unavailableDays: mockUnavailableDays,
         })
@@ -262,7 +262,7 @@ describe('<VaccineAppointment />', () => {
     })
 
     it('should redirect to home page if user clicks on "Ok" button', async () => {
-        ;(fetcher.get as jest.Mock).mockResolvedValue({
+        (fetcher.get as jest.Mock).mockResolvedValue({
             availableHours: mockAvailableHours,
             unavailableDays: mockUnavailableDays,
         })
@@ -311,7 +311,7 @@ describe('<VaccineAppointment />', () => {
     })
 
     it('should not be able to submit form if there are no available hours', async () => {
-        ;(fetcher.get as jest.Mock).mockResolvedValue({
+        (fetcher.get as jest.Mock).mockResolvedValue({
             availableHours: [],
             unavailableDays: mockUnavailableDays,
         })
@@ -340,7 +340,7 @@ describe('<VaccineAppointment />', () => {
     })
 
     it('should not be able to choose an unavailable date', async () => {
-        ;(fetcher.get as jest.Mock).mockResolvedValue({
+        (fetcher.get as jest.Mock).mockResolvedValue({
             availableHours: mockAvailableHours,
             unavailableDays: mockUnavailableDays,
         })
