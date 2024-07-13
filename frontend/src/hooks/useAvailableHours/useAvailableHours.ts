@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import fetcher from '../services/api'
+import fetcher from '../../services/api'
 
 export const useAvailableHours = (date: Date) => {
     const [availableHours, setAvailableHours] = useState<string[]>([])
@@ -8,7 +8,7 @@ export const useAvailableHours = (date: Date) => {
         const fetchAvailableHours = async () => {
             try {
                 const dateString = date.toISOString().split('T')[0]
-                const response: string[] = await fetcher(
+                const response: string[] = await fetcher.get(
                     `/api/available-times?date=${dateString}`
                 )
                 setAvailableHours(response)

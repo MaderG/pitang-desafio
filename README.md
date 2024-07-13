@@ -29,7 +29,7 @@ perdidos.
 - Portal desenvolvido em React.
 - Utilização do react-datepicker para gerenciamento de datas.
 - API desenvolvida em Node.js para receber os dados do portal.
-- Axios utilizado como cliente HTTP.
+- FetchAPI utilizado como cliente HTTP.
 - Utilização de Formik (com Yup) ou React Hook Forms (com ZOD) para validação de formulário.
 - ContextAPI para exibição de modais/popups.
 

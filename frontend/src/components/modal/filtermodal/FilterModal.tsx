@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
-
 import {
     Button,
     Modal,
@@ -19,9 +18,9 @@ import {
     Image,
 } from '@chakra-ui/react'
 
-import { useModal } from '../../context/ModalContext'
-import { FORMAT_DATE } from '../../utils/constants'
-import { FilterModalProps } from '../../types/FilterModalProps'
+import { useModal } from '../../../context/ModalContext'
+import { FORMAT_DATE } from '../../../utils/constants'
+import { FilterModalProps } from '../../../types/FilterModalProps'
 
 const FilterModal = ({
     date,
@@ -32,11 +31,21 @@ const FilterModal = ({
     applyFilters,
 }: FilterModalProps) => {
     const { isOpen, closeModal, title, message } = useModal()
-    const [tempDate, setTempDate] = useState(date)
-    const [tempStatuses, setTempStatuses] = useState([...selectedStatuses])
+    const [tempDate, setTempDate] = useState<Date | null>(date)
+    const [tempStatuses, setTempStatuses] = useState<string[]>([
+        ...selectedStatuses,
+    ])
 
     const handleApplyFilters = () => {
-        setDate(tempDate)
+        if (
+            tempDate &&
+            availableDates.some(
+                (availableDate) =>
+                    availableDate.toDateString() === tempDate.toDateString()
+            )
+        ) {
+            setDate(tempDate)
+        }
         setSelectedStatuses(tempStatuses)
         closeModal()
         applyFilters()
@@ -67,7 +76,7 @@ const FilterModal = ({
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>{title}</ModalHeader>
-                <ModalCloseButton />
+                <ModalCloseButton data-testid="close-button" />
                 <ModalBody>
                     <Text>{message}</Text>
                     <VStack spacing={4} align="stretch">
@@ -79,7 +88,9 @@ const FilterModal = ({
                                 includeDates={availableDates}
                                 locale="pt-br"
                                 dateFormat={FORMAT_DATE}
-                                customInput={<Input maxW="350px" />}
+                                customInput={
+                                    <Input data-testid="input" maxW="350px" />
+                                }
                             />
                             <Image
                                 cursor="pointer"

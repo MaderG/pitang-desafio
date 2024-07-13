@@ -7,8 +7,8 @@ import {
     Button,
     useToast,
 } from '@chakra-ui/react'
-import fetcher from '../services/api'
-import { StatusUpdateButtonProps } from '../types/StatusUpdateButtonProps'
+import fetcher from '../../services/api'
+import { StatusUpdateButtonProps } from '../../types/StatusUpdateButtonProps'
 
 const StatusUpdateButton: React.FC<StatusUpdateButtonProps> = ({
     id,
@@ -18,6 +18,9 @@ const StatusUpdateButton: React.FC<StatusUpdateButtonProps> = ({
     const toast = useToast()
 
     const updateStatus = async (id: string, status: string) => {
+        if (status === currentStatus) {
+            return
+        }
         try {
             await fetcher.put(`/api/appointments/${id}`, {
                 status,
@@ -48,17 +51,30 @@ const StatusUpdateButton: React.FC<StatusUpdateButtonProps> = ({
 
     return (
         <Menu>
-            <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+            <MenuButton
+                data-testid="currentStatus"
+                as={Button}
+                rightIcon={<ChevronDownIcon />}
+            >
                 {currentStatus}
             </MenuButton>
             <MenuList>
-                <MenuItem onClick={() => handleStatusChange('Pendente')}>
-                    Pendente
-                </MenuItem>
-                <MenuItem onClick={() => handleStatusChange('Cancelado')}>
+                <MenuItem
+                    data-testid="menu-item-Cancelado"
+                    onClick={() => handleStatusChange('Cancelado')}
+                >
                     Cancelado
                 </MenuItem>
-                <MenuItem onClick={() => handleStatusChange('Finalizado')}>
+                <MenuItem
+                    data-testid="menu-item-Pendente"
+                    onClick={() => handleStatusChange('Pendente')}
+                >
+                    Pendente
+                </MenuItem>
+                <MenuItem
+                    data-testid="menu-item-Finalizado"
+                    onClick={() => handleStatusChange('Finalizado')}
+                >
                     Finalizado
                 </MenuItem>
             </MenuList>

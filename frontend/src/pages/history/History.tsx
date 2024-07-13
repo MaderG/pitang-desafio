@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
     Table,
     TableCaption,
@@ -18,18 +18,18 @@ import {
 } from '@chakra-ui/react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 
-import fetcher from '../services/api'
-import SortableHeader from '../components/SortableHeaders'
-import { SortOrder } from '../types/SortableHeaderProps'
-import formatDate from '../utils/formatDate'
-import formatTime from '../utils/formatTime'
-import { Appointment } from '../types/Appointment'
-import { useModal } from '../context/ModalContext'
-import FilterModal from '../components/modal/FilterModal'
-import { getStatusInfo } from '../utils/statusUtils'
-import { StatusValue } from '../types/Status'
-import StatusUpdateButton from '../components/StatusUpdateButton'
-import useAvailableDates from '../hooks/useAvailableDates'
+import fetcher from '../../services/api'
+import SortableHeader from '../../components/sortableHeader/SortableHeader'
+import { SortOrder } from '../../types/SortableHeaderProps'
+import formatDate from '../../utils/formatDate'
+import formatTime from '../../utils/formatTime'
+import { Appointment } from '../../types/Appointment'
+import { useModal } from '../../context/ModalContext'
+import FilterModal from '../../components/modal/filtermodal/FilterModal'
+import { getStatusInfo } from '../../utils/statusUtils'
+import { StatusValue } from '../../types/Status'
+import StatusUpdateButton from '../../components/statusUpdateButton/StatusUpdateButton'
+import useAvailableDates from '../../hooks/useAvailableDates/useAvailableDates'
 
 const History = () => {
     const [page, setPage] = useState<number>(1)
@@ -58,7 +58,7 @@ const History = () => {
         setLoading(true)
         setError(null)
         try {
-            const response = await fetcher(
+            const response = await fetcher.get(
                 `/api/appointments?page=${page}&date=${date}&status=${selectedStatuses}&sortBy=${sortBy}&order=${order}`
             )
             setAppointments(response.appointments)
@@ -66,7 +66,6 @@ const History = () => {
             setTotalPages(response.totalPages)
         } catch (err) {
             if (err instanceof Error) {
-                console.error('Failed to fetch appointments', err)
                 setError(err.message)
             }
         }
@@ -78,7 +77,7 @@ const History = () => {
         fetchData()
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         fetchData()
     }, [page, date, order, sortBy, selectedStatuses])
 
@@ -90,21 +89,21 @@ const History = () => {
         )
     }
 
-    if (error || datesError) {
+    if (allAppointments === 0 && !error) {
         return (
             <Center minH="calc(100vh - 60px)">
                 <Heading as="h1" size="xl">
-                    Erro ao carregar os agendamentos :/
+                    Nenhum agendamento encontrado :(
                 </Heading>
             </Center>
         )
     }
 
-    if (allAppointments === 0) {
+    if (error || datesError) {
         return (
             <Center minH="calc(100vh - 60px)">
                 <Heading as="h1" size="xl">
-                    Nenhum agendamento encontrado :(
+                    Erro ao carregar os agendamentos :/
                 </Heading>
             </Center>
         )
@@ -155,14 +154,7 @@ const History = () => {
                                         setSortBy={setSortBy}
                                         setOrder={setOrder}
                                     />
-                                    <SortableHeader
-                                        field="status"
-                                        label="Status"
-                                        sortBy={sortBy}
-                                        order={order as SortOrder}
-                                        setSortBy={setSortBy}
-                                        setOrder={setOrder}
-                                    />
+                                    <Th minW="140px">Status</Th>
                                     <SortableHeader
                                         field="time"
                                         label="Hora"
@@ -241,7 +233,9 @@ const History = () => {
                     onClick={() => setPage(page - 1)}
                     isDisabled={page === 1}
                 />
-                <Text mx="4">{page}</Text>
+                <Text data-testid="pageNumber" mx="4">
+                    {page}
+                </Text>
                 <IconButton
                     bg="#da4c44"
                     color="white"

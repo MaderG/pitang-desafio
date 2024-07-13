@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import fetcher from '../services/api'
+import fetcher from '../../services/api'
 
 const useAvailableDates = () => {
     const [availableDates, setAvailableDates] = useState<Date[]>([])
@@ -9,14 +9,13 @@ const useAvailableDates = () => {
     const fetchAvailableDates = async () => {
         setLoading(true)
         try {
-            const response = await fetcher('/api/available-days')
+            const response = await fetcher.get('/api/available-days')
             const dates = response.map(
                 (date: string) => new Date(date + 'T00:00:00-03:00')
             )
             setAvailableDates(dates)
         } catch (err) {
             if (err instanceof Error) {
-                console.error('Failed to fetch available days', err)
                 setError(err.message)
             }
         }
