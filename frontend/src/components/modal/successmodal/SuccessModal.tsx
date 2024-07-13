@@ -23,7 +23,13 @@ const SuccessModal = () => {
     if (!isOpen) return null
 
     return (
-        <Modal isOpen={isOpen} onClose={closeModal}>
+        <Modal
+            isOpen={isOpen}
+            onClose={() => {
+                closeModal()
+                navigate('/')
+            }}
+        >
             <ModalOverlay />
             <ModalContent>
                 <ModalHeader>{title}</ModalHeader>
