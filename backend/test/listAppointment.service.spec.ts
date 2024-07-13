@@ -6,6 +6,7 @@ import { InvalidDateError } from '../src/errors/InvalidDateError';
 import { InvalidStatusError } from '../src/errors/InvalidStatusError';
 import { InvalidSortByError } from '../src/errors/InvalidSortByError';
 import { mapStatusesToEnglish } from '../src/utils/statusUtils';
+import { InvalidParamsError } from '../src/errors/InvalidParamsError';
 
 jest.mock('../src/lib/prisma', () => ({
   prisma: {
@@ -106,6 +107,19 @@ describe('ListAppointmentService', () => {
       skip: 0,
       orderBy: { date: 'asc' },
     });
+  })
+
+  it('should throw InvalidParamsError for invalid page parameter', async () => {
+    const query: AppointmentQuery = {
+      page: 'invalid-page',
+      limit: '10',
+      date: '2023-01-01',
+      status: 'scheduled',
+      sortBy: 'date',
+      order: 'asc',
+    };
+
+    await expect(service.listAppointments(query)).rejects.toThrow(InvalidParamsError);
   })
 
   it('should throw InvalidDateError for invalid date format', async () => {
