@@ -12,7 +12,7 @@ import { InvalidParamsError } from '../errors/InvalidParamsError'
 export class ListAppointmentService {
   async listAppointments(
     query: AppointmentQuery,
-  ): Promise<{ totalPages: number; appointments: Appointment[] }> {
+  ): Promise<{ totalPages: number; appointments: Appointment[], allAppointments: number }> {
     const { page, limit, date, status, sortBy, order } = query
 
     const parsedOrder = order === 'asc' ? 'asc' : 'desc'
@@ -37,7 +37,7 @@ export class ListAppointmentService {
     const statusFilter = this.processStatusFilter(status)
 
     if (!statusFilter) {
-      return { totalPages: 0, appointments: [] }
+      return { totalPages: 0, appointments: [], allAppointments: 0 }
     }
     whereClause.status = { in: statusFilter }
 
@@ -55,8 +55,9 @@ export class ListAppointmentService {
     })
 
     const totalPages = Math.ceil(totalRecords / Number(limit))
+    const allAppointments = await prisma.appointment.count()
 
-    return { totalPages, appointments }
+    return { totalPages, appointments, allAppointments }
   }
 
   private processPageFilter(page: string): number {
