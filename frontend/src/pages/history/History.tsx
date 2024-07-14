@@ -72,9 +72,9 @@ const History = () => {
         setLoading(false)
     }
 
-    const applyFilters = () => {
+    const applyFilters = async () => {
         setPage(1)
-        fetchData()
+        await fetchData()
     }
 
     useEffect(() => {
