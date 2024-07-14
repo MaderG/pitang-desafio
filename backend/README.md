@@ -64,7 +64,7 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
 1. Clone o repositório:
 
     ```sh
-    git clone https://github.com/MaderG/pitang-desafio-backend.git
+    git clone https://github.com/MaderG/pitang-desafio.git
     ```
 
 2. Instale as dependências:
