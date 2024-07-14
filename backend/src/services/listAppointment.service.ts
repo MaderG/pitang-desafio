@@ -13,51 +13,63 @@ export class ListAppointmentService {
   async listAppointments(
     query: AppointmentQuery,
   ): Promise<{ totalPages: number; appointments: Appointment[], allAppointments: number }> {
-    const { page, limit, date, status, sortBy, order } = query
+    try {
+      const { page, limit, date, status, sortBy, order } = query
 
-    const parsedOrder = order === 'asc' ? 'asc' : 'desc'
-    const parsedPage = this.processPageFilter(page)
-    const parsedLimit = this.processLimitFilter(limit)
+      const parsedOrder = order === 'asc' ? 'asc' : 'desc'
+      const parsedPage = this.processPageFilter(page)
+      const parsedLimit = this.processLimitFilter(limit)
 
-    const whereClause: {
-      date?: { gte: Date; lte: Date }
-      status?: { in: string[] }
-    } = {}
+      const allAppointments = await prisma.appointment.count()
 
-    const dateFilter = this.processDateFilter(date)
-    if (dateFilter) {
-      whereClause.date = dateFilter
+      const whereClause: {
+        date?: { gte: Date; lte: Date }
+        status?: { in: string[] }
+      } = {}
+
+      const dateFilter = this.processDateFilter(date)
+      if (dateFilter) {
+        whereClause.date = dateFilter
+      }
+
+      const sortFilter = this.processSortFilter(sortBy)
+      if (!sortFilter) {
+        throw new InvalidSortByError('Parâmetro de ordenação inválido')
+      }
+
+      const statusFilter = this.processStatusFilter(status)
+
+      if (!statusFilter) {
+        return { totalPages: 0, appointments: [], allAppointments }
+      }
+      whereClause.status = { in: statusFilter }
+
+      const appointments = await prisma.appointment.findMany({
+        where: whereClause,
+        take: parsedLimit,
+        skip: (parsedPage - 1) * parsedLimit,
+        orderBy: {
+          [sortBy === 'time' ? 'date' : sortBy]: parsedOrder,
+        },
+      })
+
+      const totalRecords = await prisma.appointment.count({
+        where: whereClause,
+      })
+
+      const totalPages = Math.ceil(totalRecords / Number(limit))
+
+      return { totalPages, appointments, allAppointments }
+    } catch (error) {
+      
+      if (error instanceof InvalidDateError || 
+          error instanceof InvalidStatusError || 
+          error instanceof InvalidSortByError || 
+          error instanceof InvalidParamsError) {
+        throw error
+      }
+      throw new Error('Ocorreu um erro ao listar os agendamentos')
     }
-
-    const sortFilter = this.processSortFilter(sortBy)
-    if (!sortFilter) {
-      throw new InvalidSortByError('Parâmetro de ordenação inválido')
-    }
-
-    const statusFilter = this.processStatusFilter(status)
-
-    if (!statusFilter) {
-      return { totalPages: 0, appointments: [], allAppointments: 0 }
-    }
-    whereClause.status = { in: statusFilter }
-
-    const appointments = await prisma.appointment.findMany({
-      where: whereClause,
-      take: parsedLimit,
-      skip: (parsedPage - 1) * parsedLimit,
-      orderBy: {
-        [sortBy === 'time' ? 'date' : sortBy]: parsedOrder,
-      },
-    })
-
-    const totalRecords = await prisma.appointment.count({
-      where: whereClause,
-    })
-
-    const totalPages = Math.ceil(totalRecords / Number(limit))
-    const allAppointments = await prisma.appointment.count()
-
-    return { totalPages, appointments, allAppointments }
   }
 
   private processPageFilter(page: string): number {

@@ -89,7 +89,7 @@ const History = () => {
         )
     }
 
-    if (allAppointments === 0 && appointments.length && !error) {
+    if (allAppointments === 0 && !appointments.length && !error) {
         return (
             <Center minH="calc(100vh - 60px)">
                 <Heading as="h1" size="xl">

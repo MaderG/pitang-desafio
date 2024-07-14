@@ -24,15 +24,31 @@ export class CreateAppointmentService {
     inputData: AppointmentInput,
     dateObj: Date,
   ): Promise<Appointment> {
-    await createAppointmentService.validateAppointment(inputData, dateObj)
-    const appointment = await prisma.appointment.create({
-      data: {
-        name: inputData.name,
-        birthDate: parseISO(inputData.birthDate),
-        date: dateObj,
-      },
-    })
-    return appointment
+    try {
+      await this.validateAppointment(inputData, dateObj)
+      const appointment = await prisma.appointment.create({
+        data: {
+          name: inputData.name,
+          birthDate: parseISO(inputData.birthDate),
+          date: dateObj,
+        },
+      })
+      return appointment
+    } catch (error) {
+      // Log the error if necessary
+      console.error('Error creating appointment:', error)
+
+      // Handle known errors
+      if (error instanceof PastDateError || 
+          error instanceof InvalidHourError || 
+          error instanceof BookingBoundsError || 
+          error instanceof AlreadyBookedError) {
+        throw error
+      }
+
+      // Throw a generic error for unknown issues
+      throw new Error('Ocorreu um erro ao criar o agendamento')
+    }
   }
 
   private async validateAppointment(
@@ -61,6 +77,7 @@ export class CreateAppointmentService {
       throw new InvalidHourError('Agendamento fora do horário permitido. Agende entre as 8h e as 17h.')
     }
   }
+
   private async validateDailyLimit(dateObj: Date): Promise<void> {
     const start = startOfDay(dateObj)
     const end = endOfDay(dateObj)

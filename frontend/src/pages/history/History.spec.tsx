@@ -132,6 +132,44 @@ describe('<History />', () => {
         })
     })
 
+    it('should handle a query with no results', async () => {
+        global.fetch.mockImplementation((url) => {
+            if (url.includes('/api/appointments')) {
+                return Promise.resolve({
+                    ok: true,
+                    json: () =>
+                        Promise.resolve({
+                            appointments: [],
+                            allAppointments: 1,
+                            totalPages: 0,
+                        }),
+                })
+            }
+            if (url.includes('/api/available-days')) {
+                return Promise.resolve({
+                    ok: true,
+                    json: () => Promise.resolve(mockDatesResponse),
+                })
+            }
+        })
+
+        await act(async () => {
+            render(
+                <ChakraProvider>
+                    <ModalProvider>
+                        <History />
+                    </ModalProvider>
+                </ChakraProvider>
+            )
+        })
+
+        await waitFor(() => {
+            expect(
+                screen.getByText('Nenhum agendamento encontrado com esses parâmetros')
+            ).toBeInTheDocument()
+        })
+    })
+
     it('should handle API errors gracefully', async () => {
         global.fetch.mockImplementationOnce(() =>
             Promise.reject(new Error('Failed to fetch appointments'))
