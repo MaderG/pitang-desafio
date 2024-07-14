@@ -28,9 +28,9 @@ export default class AppointmentController {
     try {
       const queryParams = AppointmentQuerySchema.parse(req.query)
 
-      const { totalPages, appointments } = await listAppointmentService.listAppointments(queryParams);
+      const { totalPages, appointments, allAppointments } = await listAppointmentService.listAppointments(queryParams);
 
-      return res.status(200).json({ totalPages, appointments })
+      return res.status(200).json({ totalPages, appointments, allAppointments })
     } catch (err) {
       return handleErrorResponse(err as Error, res);
     }
