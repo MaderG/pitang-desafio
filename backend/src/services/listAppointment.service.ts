@@ -19,6 +19,8 @@ export class ListAppointmentService {
     const parsedPage = this.processPageFilter(page)
     const parsedLimit = this.processLimitFilter(limit)
 
+    const allAppointments = await prisma.appointment.count()
+
     const whereClause: {
       date?: { gte: Date; lte: Date }
       status?: { in: string[] }
@@ -37,7 +39,7 @@ export class ListAppointmentService {
     const statusFilter = this.processStatusFilter(status)
 
     if (!statusFilter) {
-      return { totalPages: 0, appointments: [], allAppointments: 0 }
+      return { totalPages: 0, appointments: [], allAppointments }
     }
     whereClause.status = { in: statusFilter }
 
@@ -55,7 +57,6 @@ export class ListAppointmentService {
     })
 
     const totalPages = Math.ceil(totalRecords / Number(limit))
-    const allAppointments = await prisma.appointment.count()
 
     return { totalPages, appointments, allAppointments }
   }
