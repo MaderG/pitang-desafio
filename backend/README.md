@@ -7,7 +7,6 @@ Este repositório contém o backend de uma aplicação para agendamentos de vaci
 - [Sobre](#sobre)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Estrutura de Pastas](#estrutura-de-pastas)
-- [Configuração de Ambiente](#configuração-de-ambiente)
 - [Como Executar](#como-executar)
 - [Testes](#testes)
   - [Preparação do Banco de Dados de Testes](#preparação-do-banco-de-dados-de-testes)
@@ -68,17 +67,6 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
 - **test/**
   - Contém os testes unitários, e2e e de integração da aplicação.
 
-## Configuração de Ambiente
-
-Antes de executar a aplicação ou os testes, você precisa configurar as variáveis de ambiente necessárias:
-
-- **Desenvolvimento:**
-  Crie um arquivo `.env` na raiz do projeto e adicione as variáveis de ambiente necessárias, conforme o exemplo fornecido em `.env.example`.
-
-  ```sh
-  PORT= <porta em que sua aplicação irá rodar>
-  DATABASE_URL= <URL de conexão com seu banco de dados de desenvolvimento>
-  ```
 
 ## Como Executar
 
