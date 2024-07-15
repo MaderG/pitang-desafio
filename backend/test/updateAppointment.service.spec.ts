@@ -86,7 +86,7 @@ describe('UpdateAppointmentService', () => {
     };
 
     (prisma.appointment.findUnique as jest.Mock).mockResolvedValue(mockAppointment);
-    (prisma.appointment.update as jest.Mock).mockRejectedValue(new Error('UpdateFailed'));
+    (prisma.appointment.update as jest.Mock).mockRejectedValue(new UnableToUpdateError('Unable to update'));
     (mapStatusToEnglish as jest.Mock).mockReturnValue('FINISHED');
 
     await expect(service.updateAppointment('1', 'FINISHED')).rejects.toThrow(UnableToUpdateError);
