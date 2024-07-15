@@ -35,18 +35,12 @@ export class CreateAppointmentService {
       })
       return appointment
     } catch (error) {
-      // Log the error if necessary
-      console.error('Error creating appointment:', error)
-
-      // Handle known errors
       if (error instanceof PastDateError || 
           error instanceof InvalidHourError || 
           error instanceof BookingBoundsError || 
           error instanceof AlreadyBookedError) {
         throw error
       }
-
-      // Throw a generic error for unknown issues
       throw new Error('Ocorreu um erro ao criar o agendamento')
     }
   }

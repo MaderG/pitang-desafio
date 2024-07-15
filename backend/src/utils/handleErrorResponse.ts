@@ -34,6 +34,5 @@ export function handleErrorResponse(err: Error, res: Response): Response {
   if (err instanceof ZodError) {
     return res.status(400).json({ error: err.errors[0].message })
   }
-  console.error('Server Error:', err)
   return res.status(500).json({ error: 'Internal Server Error' })
 }

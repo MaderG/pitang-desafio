@@ -29,10 +29,6 @@ export class AvailableAppointmentService {
       )
       return [...new Set(dates)]
     } catch (error) {
-      // Log the error if necessary
-      console.error('Error listing available days:', error)
-
-      // Throw a generic error for unknown issues
       throw new Error('Ocorreu um erro ao listar os dias disponíveis')
     }
   }
@@ -71,8 +67,6 @@ export class AvailableAppointmentService {
 
       return availableTimes
     } catch (error) {
-      console.error('Error listing available times:', error)
-
       if (error instanceof InvalidDateError) {
         throw error
       }
