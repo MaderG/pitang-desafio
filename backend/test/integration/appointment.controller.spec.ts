@@ -1,18 +1,17 @@
 import request from 'supertest'
 import express, { Request, Response } from 'express';
-import AppointmentController from '../src/controller/appointment.controller';
-import { createAppointmentService } from '../src/services/createAppointment.service';
-import { listAppointmentService } from '../src/services/listAppointment.service';
-import { updateAppointmentService } from '../src/services/updateAppointment.service';
-import { availableAppointmentService } from '../src/services/availableAppointment.service';
-import { handleErrorResponse } from '../src/utils/handleErrorResponse';
+import AppointmentController from '../../src/controller/appointment.controller';
+import { createAppointmentService } from '../../src/services/createAppointment.service';
+import { listAppointmentService } from '../../src/services/listAppointment.service';
+import { updateAppointmentService } from '../../src/services/updateAppointment.service';
+import { availableAppointmentService } from '../../src/services/availableAppointment.service';
+import { handleErrorResponse } from '../../src/utils/handleErrorResponse';
 
-// Mock the services and utility functions
-jest.mock('../src/services/createAppointment.service');
-jest.mock('../src/services/listAppointment.service');
-jest.mock('../src/services/updateAppointment.service');
-jest.mock('../src/services/availableAppointment.service');
-jest.mock('../src/utils/handleErrorResponse');
+jest.mock('../../src/services/createAppointment.service');
+jest.mock('../../src/services/listAppointment.service');
+jest.mock('../../src/services/updateAppointment.service');
+jest.mock('../../src/services/availableAppointment.service');
+jest.mock('../../src/utils/handleErrorResponse');
 
 const app = express();
 app.use(express.json());

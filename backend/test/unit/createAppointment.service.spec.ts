@@ -1,18 +1,18 @@
-import { CreateAppointmentService } from '../src/services/createAppointment.service'
-import { prisma } from '../src/lib/prisma'
-import { AppointmentInput } from '../src/types/AppointmentInput'
-import { BookingBoundsError } from '../src/errors/BookingBoundsError'
-import { AlreadyBookedError } from '../src/errors/AlreadyBookedError'
-import { PastDateError } from '../src/errors/PastDateError'
+import { CreateAppointmentService } from '../../src/services/createAppointment.service'
+import { prisma } from '../../src/lib/prisma'
+import { AppointmentInput } from '../../src/types/AppointmentInput'
+import { BookingBoundsError } from '../../src/errors/BookingBoundsError'
+import { AlreadyBookedError } from '../../src/errors/AlreadyBookedError'
+import { PastDateError } from '../../src/errors/PastDateError'
 import { Appointment } from '@prisma/client'
 import {
   MAX_DAILY_APPOINTMENTS,
   MAX_HOURLY_APPOINTMENTS,
-} from '../src/utils/constants'
+} from '../../src/utils/constants'
 import { endOfHour, parseISO, startOfHour } from 'date-fns'
-import { InvalidHourError } from '../src/errors/InvalidHourError'
+import { InvalidHourError } from '../../src/errors/InvalidHourError'
 
-jest.mock('../src/lib/prisma', () => ({
+jest.mock('../../src/lib/prisma', () => ({
   prisma: {
     appointment: {
       create: jest.fn(),

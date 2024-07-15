@@ -1,10 +1,10 @@
-import { AvailableAppointmentService } from '../src/services/availableAppointment.service'
-import { prisma } from '../src/lib/prisma'
-import { InvalidDateError } from '../src/errors/InvalidDateError'
-import { MAX_DAILY_APPOINTMENTS } from '../src/utils/constants'
+import { AvailableAppointmentService } from '../../src/services/availableAppointment.service'
+import { prisma } from '../../src/lib/prisma'
+import { InvalidDateError } from '../../src/errors/InvalidDateError'
+import { MAX_DAILY_APPOINTMENTS } from '../../src/utils/constants'
 import { startOfDay, parseISO, endOfDay } from 'date-fns'
 
-jest.mock('../src/lib/prisma', () => ({
+jest.mock('../../src/lib/prisma', () => ({
   prisma: {
     appointment: {
       findMany: jest.fn(),

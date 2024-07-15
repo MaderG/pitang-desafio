@@ -1,14 +1,14 @@
-import { ListAppointmentService } from '../src/services/listAppointment.service';
-import { prisma } from '../src/lib/prisma';
-import { AppointmentQuery } from '../src/types/AppointmentQuery';
+import { ListAppointmentService } from '../../src/services/listAppointment.service';
+import { prisma } from '../../src/lib/prisma';
+import { AppointmentQuery } from '../../src/types/AppointmentQuery';
 import { Appointment } from '@prisma/client';
-import { InvalidDateError } from '../src/errors/InvalidDateError';
-import { InvalidStatusError } from '../src/errors/InvalidStatusError';
-import { InvalidSortByError } from '../src/errors/InvalidSortByError';
-import { mapStatusesToEnglish } from '../src/utils/statusUtils';
-import { InvalidParamsError } from '../src/errors/InvalidParamsError';
+import { InvalidDateError } from '../../src/errors/InvalidDateError';
+import { InvalidStatusError } from '../../src/errors/InvalidStatusError';
+import { InvalidSortByError } from '../../src/errors/InvalidSortByError';
+import { mapStatusesToEnglish } from '../../src/utils/statusUtils';
+import { InvalidParamsError } from '../../src/errors/InvalidParamsError';
 
-jest.mock('../src/lib/prisma', () => ({
+jest.mock('../../src/lib/prisma', () => ({
   prisma: {
     appointment: {
       findMany: jest.fn(),
@@ -17,7 +17,7 @@ jest.mock('../src/lib/prisma', () => ({
   },
 }));
 
-jest.mock('../src/utils/statusUtils', () => ({
+jest.mock('../../src/utils/statusUtils', () => ({
   mapStatusesToEnglish: jest.fn(),
 }));
 
