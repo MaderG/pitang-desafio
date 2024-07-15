@@ -134,7 +134,7 @@ const VaccineAppointment = () => {
             ) {
                 return false
             }
-            return isAfter(date, currentDate) && !unavailableDays.includes(date)
+            return isAfter(date.setHours(17), currentDate) && !unavailableDays.includes(date)
         },
         [availableHours, unavailableDays]
     )

@@ -9,6 +9,14 @@ Este repositório contém o backend de uma aplicação para agendamentos de vaci
 - [Estrutura de Pastas](#estrutura-de-pastas)
 - [Como Executar](#como-executar)
 - [Testes](#testes)
+  - [Preparação do Banco de Dados de Testes](#preparação-do-banco-de-dados-de-testes)
+  - [Executando os Testes](#executando-os-testes)
+  - [Exemplos de Comandos para Executar Testes Específicos](#exemplos-de-comandos-para-executar-testes-específicos)
+  - [Rodando Testes Unitários](#rodando-testes-unitários)
+  - [Rodando Testes de Integração](#rodando-testes-de-integração)
+  - [Rodando Testes End-to-End (E2E)](#rodando-testes-end-to-end-e2e)
+  - [Cobertura de Testes](#cobertura-de-testes)
+- [Retornando ao Banco de Dados Normal](#retornando-ao-banco-de-dados-normal)
 
 ## Sobre
 A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo da empresa Pitang. O objetivo é criar uma API robusta e eficiente para o gerenciamento de agendamentos de vacinas.
@@ -57,7 +65,8 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
   - **server.ts**: Inicialização do servidor.
 
 - **test/**
-  - Contém os testes da aplicação, como `appointment.controller.spec.ts`, `availableAppointment.service.spec.ts`, etc.
+  - Contém os testes unitários, e2e e de integração da aplicação.
+
 
 ## Como Executar
 
@@ -113,20 +122,28 @@ A API estará disponível em `http://localhost:PORT`.
 
 Este projeto inclui testes unitários e de integração para garantir a qualidade e o funcionamento correto dos serviços e controladores. Os testes são escritos utilizando a biblioteca [Jest](https://jestjs.io/).
 
+### Preparação do Banco de Dados de Testes
+
+Antes de iniciar os testes e2e, é necessário configurar o ambiente e preparar o banco de dados de testes. Isso inclui aplicar migrações e popular o banco de dados com dados necessários para os testes.
+
+Crie um arquivo `.env.test` na raiz do projeto e adicione as variáveis de ambiente necessárias, conforme o exemplo fornecido em `.env.test.example`.
+  ```sh
+  DATABASE_URL= <URL de conexão com seu banco de dados de testes>
+  ```
+  
+Execute o seguinte comando para migrar para o banco de dados de testes:
+
+  ```sh
+  npm run prisma:migrate:test
+  ```
+
 ### Executando os Testes
 
-Para executar todos os testes, utilize o comando:
+Para executar todos os testes(exceto e2e), utilize o comando:
 
   ```sh
   npm run test
   ```
-
-### Cobertura de Testes
-Para gerar um relatório de cobertura de testes, utilize o comando:
-  ```sh
-  npm run test:coverage
-  ```
-Isso irá gerar um relatório detalhado sobre a cobertura dos testes, indicando quais partes do código foram testadas e quais não foram.
 
 ### Exemplo de testes
 Aqui estão alguns exemplos de comandos para executar testes específicos:
@@ -140,5 +157,42 @@ Aqui estão alguns exemplos de comandos para executar testes específicos:
     ```sh
     npm run test:watch
     ```
+
+### Rodando Testes Unitários
+
+Para garantir que a aplicação funcione conforme esperado, execute os testes unitários:
+
+  ```sh
+  npm run test:unit
+  ```
+
+### Rodando Testes de Integração
+
+Para garantir que a aplicação funcione conforme esperado em um ambiente integrado, execute os testes de integração:
+
+  ```sh
+  npm run test:integration
+  ```
+
+### Rodando Testes End-to-End (e2e)
+
+Para garantir que a aplicação funcione conforme esperado em um ambiente que simula a produção, é importante executar testes e2e
+
+  ```sh
+  npm run test:e2e
+  ```
+
+### Cobertura de Testes
+Para gerar um relatório de cobertura de testes, utilize o comando:
+  ```sh
+  npm run test:coverage
+  ```
+Isso irá gerar um relatório detalhado sobre a cobertura dos testes, indicando quais partes do código foram testadas e quais não foram.
+
+## Retornando ao Banco de Dados Normal
+Após os testes e2e, você pode querer retornar ao desenvolvimento normal ou executar outros tipos de testes que utilizam o banco de dados de desenvolvimento. Certifique-se de que suas configurações de ambiente estejam apontando para o banco de dados de desenvolvimento, não para o banco de testes. Se necessário, execute as migrações novamente no banco de dados de desenvolvimento:
+  ```sh
+  npm run prisma:migrate
+  ```
 
 ---
