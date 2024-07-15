@@ -15,7 +15,7 @@
     "test:watch": "jest --watch",
     "test:unit": "jest test/unit",
     "test:integration": "jest test/integration",
-    "test:e2e": "dotenv -e .env.test -- jest test/e2e",
+    "test:e2e": "dotenv -e .env.test -- jest --config jest.e2e.config.js test/e2e",
     "test:coverage": "jest --coverage"
   },
   "keywords": [],
