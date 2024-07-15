@@ -10,7 +10,10 @@
     "preview": "vite preview",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "start:backend": "cd ../backend && npm start",
+    "test:coverage": "jest --coverage",
+    "cypress:open": "start:backend cypress open",
+    "cypress:run": "start:backend cypress run"
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
@@ -18,6 +21,7 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@hookform/resolvers": "^3.7.0",
+    "@testing-library/cypress": "^10.0.2",
     "date-fns": "^3.6.0",
     "framer-motion": "^11.2.13",
     "react": "^18.3.1",
@@ -43,6 +47,7 @@
     "@vitejs/plugin-react": "^4.3.1",
     "babel-jest": "^29.7.0",
     "babel-preset-vite": "^1.1.3",
+    "cypress": "^13.13.0",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.7",
