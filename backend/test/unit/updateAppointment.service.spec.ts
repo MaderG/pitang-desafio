@@ -1,13 +1,13 @@
-import { UpdateAppointmentService } from '../src/services/updateAppointment.service';
-import { prisma } from '../src/lib/prisma';
-import { InvalidStatusError } from '../src/errors/InvalidStatusError';
-import { AppointmentNotExistsError } from '../src/errors/AppointmentNotExistsError';
-import { mapStatusToEnglish } from '../src/utils/statusUtils';
+import { UpdateAppointmentService } from '../../src/services/updateAppointment.service';
+import { prisma } from '../../src/lib/prisma';
+import { InvalidStatusError } from '../../src/errors/InvalidStatusError';
+import { AppointmentNotExistsError } from '../../src/errors/AppointmentNotExistsError';
+import { mapStatusToEnglish } from '../../src/utils/statusUtils';
 import { Appointment } from '@prisma/client';
-import { MissingParametersError } from '../src/errors/MissingParametersError';
-import { UnableToUpdateError } from '../src/errors/UnableToUpdateError';
+import { MissingParametersError } from '../../src/errors/MissingParametersError';
+import { UnableToUpdateError } from '../../src/errors/UnableToUpdateError';
 
-jest.mock('../src/lib/prisma', () => ({
+jest.mock('../../src/lib/prisma', () => ({
   prisma: {
     appointment: {
       update: jest.fn(),
@@ -16,7 +16,7 @@ jest.mock('../src/lib/prisma', () => ({
   },
 }));
 
-jest.mock('../src/utils/statusUtils', () => ({
+jest.mock('../../src/utils/statusUtils', () => ({
   mapStatusToEnglish: jest.fn(),
 }));
 
