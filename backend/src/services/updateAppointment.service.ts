@@ -9,30 +9,31 @@ import { UnableToUpdateError } from '../errors/UnableToUpdateError'
 
 export class UpdateAppointmentService {
   async updateAppointment(id: string, status: string): Promise<Appointment> {
-    if (!id) {
-      throw new MissingParametersError(
-        'É necessário informar o id do agendamento',
-      )
-    }
-    
-    if (Number.isNaN(Number(id))) {
-      throw new MissingParametersError('O id precisa ser um dígito')
-    }
-
-    if (!status) {
-      throw new MissingParametersError('É necessário informar o status')
-    }
-
-    const existingAppointment = await prisma.appointment.findUnique({
-      where: { id: Number(id) },
-    })
-
-    if (!existingAppointment) {
-      throw new AppointmentNotExistsError('Agendamento não encontrado')
-    }
-
-    const newStatus = await this.validateStatus(status)
     try {
+      if (!id) {
+        throw new MissingParametersError(
+          'É necessário informar o id do agendamento',
+        )
+      }
+
+      if (Number.isNaN(Number(id))) {
+        throw new MissingParametersError('O id precisa ser um dígito')
+      }
+
+      if (!status) {
+        throw new MissingParametersError('É necessário informar o status')
+      }
+
+      const existingAppointment = await prisma.appointment.findUnique({
+        where: { id: Number(id) },
+      })
+
+      if (!existingAppointment) {
+        throw new AppointmentNotExistsError('Agendamento não encontrado')
+      }
+
+      const newStatus = await this.validateStatus(status)
+      
       const appointment = await prisma.appointment.update({
         where: {
           id: Number(id),
@@ -43,8 +44,15 @@ export class UpdateAppointmentService {
       })
 
       return appointment
-    } catch (err) {
-      throw new UnableToUpdateError('Não foi possível atualizar o agendamento')
+    } catch (error) {
+
+      if (error instanceof MissingParametersError || 
+          error instanceof InvalidStatusError || 
+          error instanceof AppointmentNotExistsError || 
+          error instanceof UnableToUpdateError) {
+        throw error
+      }
+      throw new Error('Ocorreu um erro ao atualizar o agendamento')
     }
   }
 

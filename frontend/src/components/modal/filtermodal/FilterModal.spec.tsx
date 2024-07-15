@@ -126,4 +126,16 @@ describe('<FilterModal />', () => {
         fireEvent.click(applyButton)
         expect(mockProps.setDate).not.toHaveBeenCalled()
     })
+
+    it('should clear the date when the clear button is clicked', () => {
+        fireEvent.click(screen.getByText('Filtrar agendamentos'))
+        const clearButton = screen.getByTestId('clear-date')
+        fireEvent.click(clearButton)
+        const applyButton = screen.getByRole('button', {
+            name: 'Aplicar Filtros',
+        })
+        fireEvent.click(applyButton)
+        expect(mockProps.setDate).toHaveBeenCalledWith(null)
+    })
+
 })

@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import DatePicker from 'react-datepicker'
-import 'react-datepicker/dist/react-datepicker.css'
+import { useState } from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import {
     Button,
     Modal,
@@ -16,11 +16,11 @@ import {
     VStack,
     HStack,
     Image,
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 
-import { useModal } from '../../../context/ModalContext'
-import { FORMAT_DATE } from '../../../utils/constants'
-import { FilterModalProps } from '../../../types/FilterModalProps'
+import { useModal } from '../../../context/ModalContext';
+import { FORMAT_DATE } from '../../../utils/constants';
+import { FilterModalProps } from '../../../types/FilterModalProps';
 
 const FilterModal = ({
     date,
@@ -30,46 +30,55 @@ const FilterModal = ({
     setSelectedStatuses,
     applyFilters,
 }: FilterModalProps) => {
-    const { isOpen, closeModal, title, message } = useModal()
-    const [tempDate, setTempDate] = useState<Date | null>(date)
-    const [tempStatuses, setTempStatuses] = useState<string[]>([
-        ...selectedStatuses,
-    ])
+    const { isOpen, closeModal, title, message } = useModal();
+    const [loading, setLoading] = useState(false);
+    const [clearedDate, setClearedDate] = useState(false);
+    const [tempDate, setTempDate] = useState<Date | null>(date);
+    const [tempStatuses, setTempStatuses] = useState<string[]>(selectedStatuses);
 
-    const handleApplyFilters = () => {
-        if (
-            tempDate &&
-            availableDates.some(
-                (availableDate) =>
-                    availableDate.toDateString() === tempDate.toDateString()
-            )
-        ) {
-            setDate(tempDate)
+    const handleApplyFilters = async () => {
+        setLoading(true);
+        try {
+            if (
+                tempDate &&
+                availableDates.some(
+                    availableDate => availableDate.toDateString() === tempDate.toDateString()
+                )
+            ) {
+                setDate(tempDate);
+            }
+            else {
+                if (clearedDate){
+                    setDate(null);            
+                }
+            }
+            setSelectedStatuses(tempStatuses);
+            await applyFilters();
+        } catch (error) {
+            console.error('Error applying filters:', error);
+        } finally {
+            setLoading(false);
+            closeModal();
         }
-        setSelectedStatuses(tempStatuses)
-        closeModal()
-        applyFilters()
-    }
+    };
 
     const handleDateChange = (date: Date | null) => {
-        if (date) {
-            setTempDate(date)
-        }
-    }
+        setTempDate(date);
+    };
 
     const handleStatusChange = (status: string, isChecked: boolean) => {
-        setTempStatuses((prev) =>
-            isChecked ? [...prev, status] : prev.filter((s) => s !== status)
-        )
-    }
+        setTempStatuses(prev =>
+            isChecked ? [...prev, status] : prev.filter(s => s !== status)
+        );
+    };
 
     const handleClose = () => {
-        setTempDate(date)
-        setTempStatuses([...selectedStatuses])
-        closeModal()
-    }
+        setTempDate(date);
+        setTempStatuses(selectedStatuses);
+        closeModal();
+    };
 
-    if (!isOpen) return null
+    if (!isOpen) return null;
 
     return (
         <Modal isOpen={isOpen} onClose={handleClose}>
@@ -88,14 +97,16 @@ const FilterModal = ({
                                 includeDates={availableDates}
                                 locale="pt-br"
                                 dateFormat={FORMAT_DATE}
-                                customInput={
-                                    <Input data-testid="input" maxW="350px" />
-                                }
+                                customInput={<Input data-testid="input" maxW="350px" />}
                             />
                             <Image
                                 cursor="pointer"
-                                onClick={() => setTempDate(null)}
+                                onClick={() => {
+                                  setClearedDate(true)
+                                  setTempDate(null)
+                                }}
                                 maxW="25px"
+                                data-testid="clear-date"
                                 src="broom.svg"
                                 position="absolute"
                                 right="40px"
@@ -110,15 +121,8 @@ const FilterModal = ({
                                         <Checkbox
                                             key={status}
                                             colorScheme="orange"
-                                            isChecked={tempStatuses.includes(
-                                                status
-                                            )}
-                                            onChange={(e) =>
-                                                handleStatusChange(
-                                                    status,
-                                                    e.target.checked
-                                                )
-                                            }
+                                            isChecked={tempStatuses.includes(status)}
+                                            onChange={(e) => handleStatusChange(status, e.target.checked)}
                                         >
                                             {status}
                                         </Checkbox>
@@ -134,13 +138,15 @@ const FilterModal = ({
                         color="white"
                         _hover={{ bg: '#d03e35' }}
                         onClick={handleApplyFilters}
+                        isDisabled={loading}
+                        loadingText="Aplicando Filtros"
                     >
-                        Aplicar Filtros
+                        {loading ? "Aplicando..." : "Aplicar Filtros"}
                     </Button>
                 </ModalFooter>
             </ModalContent>
         </Modal>
-    )
-}
+    );
+};
 
-export default FilterModal
+export default FilterModal;
