@@ -151,7 +151,7 @@ Execute o seguinte comando para migrar para o banco de dados de testes:
 
 ### Executando os Testes
 
-Para executar todos os testes, utilize o comando:
+Para executar todos os testes(exceto e2e), utilize o comando:
 
   ```sh
   npm run test
