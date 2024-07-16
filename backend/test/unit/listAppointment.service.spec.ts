@@ -109,6 +109,22 @@ describe('ListAppointmentService', () => {
     });
   })
 
+  it('should throw InvalidParamsError for page greater than totalPages', async () => {
+    const query: AppointmentQuery = {
+      page: '2',
+      limit: '10',
+      date: '2023-01-01',
+      status: 'Pendente',
+      sortBy: 'date',
+      order: 'asc',
+    };
+
+    (prisma.appointment.count as jest.Mock).mockResolvedValue(1);
+    (mapStatusesToEnglish as jest.Mock).mockReturnValue(['PENDING']);
+
+    await expect(service.listAppointments(query)).rejects.toThrow(InvalidParamsError);
+  })
+
   it('should throw InvalidParamsError for invalid page parameter', async () => {
     const query: AppointmentQuery = {
       page: 'invalid-page',
