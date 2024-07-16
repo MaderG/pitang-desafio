@@ -116,8 +116,8 @@ const History = () => {
             minH={'calc(100vh - 60px)'}
             bg={'gray.50'}
             p={4}
-        >
-            <Center>
+        >   
+            <Flex justify="center" align="center" mt="4">
                 <IconButton
                     icon={
                         <img
@@ -128,8 +128,12 @@ const History = () => {
                     }
                     onClick={() => showModal('Filtrar agendamentos', '')}
                     aria-label="Filtrar agendamentos"
+                    mr={2}
                 />
-            </Center>
+                <Text cursor="pointer" onClick={() => showModal('Filtrar agendamentos', '')}>
+                    Filtrar Agendamentos
+                </Text>
+            </Flex>
             <Center mt="4">
                 {appointments.length === 0 ? (
                     <Center minH="calc(75vh - 60px)">
