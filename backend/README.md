@@ -16,8 +16,8 @@ Este repositório contém o backend de uma aplicação para agendamentos de vaci
   - [Rodando Testes de Integração](#rodando-testes-de-integração)
   - [Rodando Testes End-to-End (E2E)](#rodando-testes-end-to-end-e2e)
   - [Cobertura de Testes](#cobertura-de-testes)
-  - [Retornando ao Banco de Dados Normal](#retornando-ao-banco-de-dados-normal)
-  - [Documentação da API](#documentação-da-api)
+- [Retornando ao Banco de Dados Normal](#retornando-ao-banco-de-dados-normal)
+- [Documentação da API](#documentação-da-api)
 
 ## Sobre
 A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo da empresa Pitang. O objetivo é criar uma API robusta e eficiente para o gerenciamento de agendamentos de vacinas.
@@ -204,5 +204,7 @@ Para acessar a documentação Swagger, inicie a aplicação e navegue até:
   ```sh
   http://localhost:3000/docs
   ```
+  
 Substitua `3000` pela porta configurada em seu arquivo `.env` se preciso.
+
 ---
