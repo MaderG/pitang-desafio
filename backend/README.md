@@ -92,6 +92,7 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
       ```sh
       PORT=3000
       DATABASE_URL=file:./dev.db
+      NODE_ENV=development
       ```
 
 4. Gere o cliente Prisma:
@@ -130,6 +131,8 @@ Antes de iniciar os testes e2e, é necessário configurar o ambiente e preparar 
 Crie um arquivo `.env.test` na raiz do projeto e adicione as variáveis de ambiente necessárias, conforme o exemplo fornecido em `.env.test.example`.
   ```sh
   DATABASE_URL=file:./dev.db
+  NODE_ENV=test
+  PORT=5000
   ```
   
 Execute o seguinte comando para migrar para o banco de dados de testes:
