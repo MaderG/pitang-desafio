@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -65,6 +65,9 @@ const FilterModal = ({
     const handleDateChange = (date: Date | null) => {
         setTempDate(date);
     };
+
+    useEffect(() => {
+    }, [tempStatuses]);
 
     const handleStatusChange = (status: string, isChecked: boolean) => {
         setTempStatuses(prev =>
