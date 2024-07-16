@@ -15,7 +15,7 @@ export const components = {
         date: {
           type: 'string',
           format: 'date',
-          example: '2024-07-15',
+          example: '2025-07-15',
         },
         time: {
           type: 'string',
@@ -40,7 +40,7 @@ export const components = {
         date: {
           type: 'string',
           format: 'date',
-          example: '2024-07-15',
+          example: '5-07-15',
         },
         time: {
           type: 'string',
@@ -69,7 +69,7 @@ export const components = {
         date: {
           type: 'string',
           format: 'date',
-          example: '2024-07-15',
+          example: '2025-07-15',
         },
         time: {
           type: 'string',
