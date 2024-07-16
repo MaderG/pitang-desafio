@@ -26,17 +26,7 @@
  *               properties:
  *                 error:
  *                   type: string
- *                   example: Invalid date format, Already booked, Past date, Booking bounds exceeded, Invalid hour
- *       404:
- *         description: Agendamento não encontrado
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 error:
- *                   type: string
- *                   example: Agendamento não encontrado
+ *                   example: Você não pode criar agendamento no passado.
  *       500:
  *         description: Erro interno do servidor
  *         content:
@@ -75,7 +65,7 @@
  *         schema:
  *           type: string
  *           format: date-time
- *           example: 2024-08-01T03:00:00.000Z
+ *           example: 2025-08-01T03:00:00.000Z
  *         required: false
  *         description: Data para filtrar agendamentos (formato ISO 8601, com T03:00:00.000Z para GMT -03:00)
  *       - in: query
@@ -125,7 +115,7 @@
  *               properties:
  *                 error:
  *                   type: string
- *                   example: Invalid date format, Invalid status, Invalid sort parameter, Invalid page parameter
+ *                   example: "Parâmetro de ordenação inválido."
  *       500:
  *         description: Erro interno do servidor
  *         content:
@@ -218,6 +208,14 @@
  *                 format: date
  *       500:
  *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal Server Error
  */
 
 /**
@@ -232,7 +230,7 @@
  *         schema:
  *           type: string
  *           format: date
- *           example: 2024-08-01
+ *           example: 2025-08-01
  *         required: true
  *         description: Data para verificar os horários disponíveis
  *     responses:
@@ -245,10 +243,27 @@
  *               items:
  *                 type: string
  *                 format: time
+ *                 example: ["08:00", "09:00", "10:00"]
  *       400:
  *         description: Data inválida
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Data inválida
  *       500:
  *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal Server Error
  */
 
 /**
@@ -267,6 +282,15 @@
  *               items:
  *                 type: string
  *                 format: date
+ *                 example: ["2024-08-01", "2024-08-02", "2024-08-03"]
  *       500:
  *         description: Erro interno do servidor
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: Internal Server Error
  */
