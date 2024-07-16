@@ -245,7 +245,11 @@ const History = () => {
                     onClick={() => setPage(page + 1)}
                     isDisabled={page === totalPages || totalPages === 0}
                 />
+                
             </Flex>
+            <Text size="s" color="gray.500" ml="4">
+                    {page} de {totalPages}
+                </Text>
         </Flex>
     )
 }

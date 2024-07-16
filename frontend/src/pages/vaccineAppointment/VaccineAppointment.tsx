@@ -42,6 +42,7 @@ const VaccineAppointment = () => {
         formState: { errors, isValid },
         setValue,
         watch,
+        trigger,
         control,
     } = useForm<CreateVaccineAppointment>({
         resolver: zodResolver(VaccineAppointmentSchema),
@@ -69,8 +70,12 @@ const VaccineAppointment = () => {
                         : (value as string | Date)
                 setValue(key as keyof CreateVaccineAppointment, dateValue)
             }
+            if (parsedData.name !== '') {
+                trigger()
+            }
         }
-    }, [setValue])
+        
+    }, [setValue, trigger])
 
     useLocalStorageManager(watch, isSubmitted)
 
