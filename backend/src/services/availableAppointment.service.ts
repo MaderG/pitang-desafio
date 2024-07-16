@@ -36,7 +36,7 @@ export class AvailableAppointmentService {
   async listAvailableTimes(date: string) {
     try {
       if (!date || !isValid(parseISO(date))) {
-        throw new InvalidDateError('Missing or invalid date query parameter')
+        throw new InvalidDateError('Data inválida')
       }
 
       const dayStart = startOfDay(parseISO(date))
