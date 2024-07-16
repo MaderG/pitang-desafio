@@ -9,6 +9,7 @@ import swaggerUi from 'swagger-ui-express'
 
 import swaggerSpec from '../swagger/swaggerConfig'
 import appointmentRouter from './routes/appointment.routes'
+import { env } from './env/env'
 
 export const app = express()
 
@@ -18,6 +19,8 @@ app.use(cors())
 
 app.use(express.json())
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+if(env.NODE_ENV !== 'test') {
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+}
 
 app.use(appointmentRouter)

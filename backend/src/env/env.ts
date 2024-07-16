@@ -3,6 +3,7 @@ import { z } from 'zod'
 const envSchema = z.object({
   PORT: z.string(),
   DATABASE_URL: z.string(),
+  NODE_ENV: z.string(),
 })
 
 const _env = envSchema.safeParse(process.env)
