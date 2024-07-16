@@ -132,6 +132,7 @@ Crie um arquivo `.env.test` na raiz do projeto e adicione as variáveis de ambie
   ```sh
   DATABASE_URL=file:./dev.db
   NODE_ENV=test
+  PORT=5000
   ```
   
 Execute o seguinte comando para migrar para o banco de dados de testes:
