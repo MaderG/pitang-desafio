@@ -96,7 +96,7 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
 
 4. Inicie a aplicação:
     ```sh
-    npm start
+    npm run dev
     ```
 
 A aplicação estará disponível em `http://localhost:5173`.
