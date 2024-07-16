@@ -6,7 +6,7 @@ const swaggerDefinition = {
   openapi: '3.0.0',
   info: {
     title: 'API para Agendamentos de Vacinas',
-    version: '1.0.3',
+    version: '1.0.4',
     description:
       'Esta é uma API desenvolvida para o gerenciamento de agendamentos de vacinas.',
     contact: {
