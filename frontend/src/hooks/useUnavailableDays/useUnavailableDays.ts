@@ -13,7 +13,7 @@ export const useUnavailableDays = () => {
                     (date) => new Date(date + 'T00:00:00-03:00')
                 )
                 const currentDate = new Date()
-                if (currentDate.getHours() >= 18) {
+                if (currentDate.getHours() >= 17 ) {
                     unavailableDays.push(currentDate)
                 }
                 setUnavailableDays(unavailableDays)
