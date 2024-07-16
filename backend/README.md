@@ -17,6 +17,7 @@ Este repositório contém o backend de uma aplicação para agendamentos de vaci
   - [Rodando Testes End-to-End (E2E)](#rodando-testes-end-to-end-e2e)
   - [Cobertura de Testes](#cobertura-de-testes)
 - [Retornando ao Banco de Dados Normal](#retornando-ao-banco-de-dados-normal)
+- [Documentação da API](#documentação-da-api)
 
 ## Sobre
 A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo da empresa Pitang. O objetivo é criar uma API robusta e eficiente para o gerenciamento de agendamentos de vacinas.
@@ -89,8 +90,8 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
     - Crie um arquivo `.env` na raiz do projeto e adicione as variáveis de ambiente necessárias, conforme o exemplo fornecido em `.env.example`.
     - Adicione as seguintes variáveis de ambiente, conforme o exemplo fornecido em `.env.example`:
       ```sh
-      PORT= <porta em que sua aplicação irá rodar>
-      DATABASE_URL= <URL de conexão com seu banco de dados>
+      PORT=3000
+      DATABASE_URL=file:./dev.db
       ```
 
 4. Gere o cliente Prisma:
@@ -111,12 +112,12 @@ A aplicação Pitang Vacina foi desenvolvida como desafio do processo seletivo d
 
 6. Inicie a aplicação:
     ```sh
-    npm start
+    npm run dev
     ```
     
     Inicia o servidor na porta especificada no arquivo `.env`.
 
-A API estará disponível em `http://localhost:PORT`.
+A API estará disponível em `http://localhost:3000`.
 
 ## Testes
 
@@ -128,7 +129,7 @@ Antes de iniciar os testes e2e, é necessário configurar o ambiente e preparar 
 
 Crie um arquivo `.env.test` na raiz do projeto e adicione as variáveis de ambiente necessárias, conforme o exemplo fornecido em `.env.test.example`.
   ```sh
-  DATABASE_URL= <URL de conexão com seu banco de dados de testes>
+  DATABASE_URL=file:./dev.db
   ```
   
 Execute o seguinte comando para migrar para o banco de dados de testes:
@@ -194,5 +195,16 @@ Após os testes e2e, você pode querer retornar ao desenvolvimento normal ou exe
   ```sh
   npm run prisma:migrate
   ```
+
+## Documentação da API
+A documentação da API foi gerada utilizando Swagger. Você pode visualizar e interagir com a API através da interface Swagger UI.
+
+Para acessar a documentação Swagger, inicie a aplicação e navegue até:
+
+  ```sh
+  http://localhost:3000/docs
+  ```
+  
+Substitua `3000` pela porta configurada em seu arquivo `.env` se preciso.
 
 ---

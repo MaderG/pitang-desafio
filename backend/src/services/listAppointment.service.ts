@@ -59,6 +59,10 @@ export class ListAppointmentService {
 
       const totalPages = Math.ceil(totalRecords / Number(limit))
 
+      if (parsedPage > totalPages) {
+        throw new InvalidParamsError('Página maior que o total de páginas')
+      }
+
       return { totalPages, appointments, allAppointments }
     } catch (error) {
       

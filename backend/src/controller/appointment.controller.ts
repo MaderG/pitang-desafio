@@ -30,6 +30,7 @@ export default class AppointmentController {
 
       const { totalPages, appointments, allAppointments } = await listAppointmentService.listAppointments(queryParams);
 
+
       return res.status(200).json({ totalPages, appointments, allAppointments })
     } catch (err) {
       return handleErrorResponse(err as Error, res);
