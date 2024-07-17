@@ -51,7 +51,7 @@ export class CreateAppointmentService {
   ): Promise<void> {
     this.checkPastDate(dateObj)
     this.checkValidHour(dateObj)
-    await this.validateExistingAppointment(inputData, dateObj)
+    await this.validateExistingAppointment(inputData)
     await this.validateDailyLimit(dateObj)
     await this.validateHourlyLimit(dateObj)
   }
@@ -109,14 +109,12 @@ export class CreateAppointmentService {
 
   private async validateExistingAppointment(
     inputData: AppointmentInput,
-    dateObj: Date,
   ): Promise<void> {
     const birthDate = startOfDay(new Date(inputData.birthDate))
     const userAppointment = await prisma.appointment.findFirst({
       where: {
         name: inputData.name,
         birthDate: birthDate,
-        date: dateObj,
       },
     })
 

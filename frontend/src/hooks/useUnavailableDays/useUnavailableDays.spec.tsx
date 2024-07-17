@@ -8,7 +8,7 @@ jest.mock('../../services/api')
 const mockedFetcher = fetcher as jest.Mocked<typeof fetcher>
 
 const TestComponent: React.FC = () => {
-    const unavailableDays = useUnavailableDays()
+    const {unavailableDays} = useUnavailableDays()
 
     return (
         <div>
