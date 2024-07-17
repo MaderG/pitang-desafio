@@ -7,7 +7,7 @@
     "start": "node --env-file=.env dist/server.cjs",
     "dev": "tsx watch --env-file=.env src/server.ts",
     "build": "tsup src",
-    "clear": "node clearDb.js",
+    "clear:database": "tsx src/utils/clearDb.ts",
     "lint": "eslint .",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev --name init",
