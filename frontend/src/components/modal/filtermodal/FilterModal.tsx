@@ -66,7 +66,7 @@ const FilterModal = ({
         setTempDate(date);
     };
 
-    useEffect(() => {
+    useEffect(() => {     
     }, [tempStatuses]);
 
     const handleStatusChange = (status: string, isChecked: boolean) => {

@@ -54,7 +54,7 @@ const VaccineAppointment = () => {
     const selectedDate = watch('date')
     const selectedTime = watch('time')
     const availableHours = useAvailableHours(selectedDate)
-    const unavailableDays = useUnavailableDays()
+    const { unavailableDays, currentDateAvailableHours } = useUnavailableDays()
 
     useEffect(() => {
         registerLocale('pt-br', ptBR)
@@ -108,41 +108,30 @@ const VaccineAppointment = () => {
 
     const filterAvailableTimes = useCallback(
         (time: Date) => {
-            const currentDate = new Date()
+            const currentDate = new Date();
+    
             if (
                 selectedDate &&
-                format(selectedDate, FORMAT_DATE) ===
-                    format(currentDate, FORMAT_DATE)
+                format(selectedDate, FORMAT_DATE) === format(currentDate, FORMAT_DATE)
             ) {
-                return (
-                    time.getTime() > currentDate.getTime() &&
-                    availableHours.includes(format(time, FORMAT_TIME))
-                )
+                return currentDateAvailableHours.includes(format(time, FORMAT_TIME));
             }
-            return availableHours.includes(format(time, FORMAT_TIME))
+            return availableHours.includes(format(time, FORMAT_TIME));
         },
-        [selectedDate, availableHours]
-    )
+        [selectedDate, currentDateAvailableHours, availableHours]
+    );
 
     const filterAvailableDates = useCallback(
         (date: Date) => {
-            const currentDate = new Date()
-            if (
-                format(date, FORMAT_DATE) ===
-                    format(currentDate, FORMAT_DATE) &&
-                !availableHours.some((hour) => {
-                    const [hourStr, minuteStr] = hour.split(':')
-                    const hourDate = new Date()
-                    hourDate.setHours(Number(hourStr), Number(minuteStr))
-                    return isAfter(hourDate, currentDate)
-                })
-            ) {
-                return false
-            }
-            return isAfter(date.setHours(17), currentDate) && !unavailableDays.includes(date)
+            const currentDate = new Date();    
+            const isUnavailable = unavailableDays.some(unavailableDay =>
+                format(unavailableDay, FORMAT_DATE) === format(date, FORMAT_DATE)
+            );
+    
+            return !isUnavailable && isAfter(date.setHours(17), currentDate);
         },
-        [availableHours, unavailableDays]
-    )
+        [unavailableDays, availableHours]
+    );
 
     return (
         <Flex
