@@ -62,6 +62,18 @@ describe('E2E test for appointment controller', () => {
       expect(res.status).toBe(400)
       expect(res.body.error).toMatch(/Limite de agendamentos por hora excedido/i)
     })
+
+    it('should fail it the birth Year is earlier than 1900', async () => {
+      const res = await request(server).post('/api/appointments').send({
+        name: 'Jane Doe',
+        birthDate: '1899-01-01',
+        date: '2025-12-20',
+        time: '10:00',
+      })
+
+      expect(res.status).toBe(400)
+      expect(res.body.error).toMatch(/Ano inválido/i)
+    })
   })
 
   describe('GET /api/appointments', () => {
