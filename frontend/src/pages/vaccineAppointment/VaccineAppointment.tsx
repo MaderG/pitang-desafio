@@ -25,7 +25,7 @@ import { CalendarIcon } from '@chakra-ui/icons'
 import VaccineAppointmentSchema from '../../zod'
 import { useLocalStorageManager } from '../../hooks/useLocalStorageManager/useLocalStorageManager'
 import { useModal } from '../../context/ModalContext'
-import { FORMAT_DATE, FORMAT_TIME } from '../../utils/constants'
+import { FORMAT_DATE, FORMAT_TIME, MAX_BIRTH_DATE, MAX_SCHEDULE_TIME, MIN_BIRTH_DATE, MIN_SCHEDULE_TIME } from '../../utils/constants'
 import SuccessModal from '../../components/modal/successmodal/SuccessModal'
 import { useAvailableHours } from '../../hooks/useAvailableHours/useAvailableHours'
 import { useUnavailableDays } from '../../hooks/useUnavailableDays/useUnavailableDays'
@@ -130,7 +130,7 @@ const VaccineAppointment = () => {
     
             return !isUnavailable && isAfter(date.setHours(17), currentDate);
         },
-        [unavailableDays, availableHours]
+        [unavailableDays]
     );
 
     return (
@@ -178,11 +178,13 @@ const VaccineAppointment = () => {
                                     control={control}
                                     render={({ field }) => (
                                         <DatePicker
+                                            showYearDropdown             
                                             selected={field.value}
                                             onChange={(date) =>
                                                 field.onChange(date)
                                             }
-                                            maxDate={new Date()}
+                                            minDate={MIN_BIRTH_DATE}
+                                            maxDate={MAX_BIRTH_DATE }
                                             locale="pt-br"
                                             dateFormat={FORMAT_DATE}
                                             customInput={
@@ -274,14 +276,10 @@ const VaccineAppointment = () => {
                                             showTimeSelectOnly
                                             timeIntervals={60}
                                             minTime={
-                                                new Date(
-                                                    new Date().setHours(7, 0)
-                                                )
+                                                MIN_SCHEDULE_TIME
                                             }
                                             maxTime={
-                                                new Date(
-                                                    new Date().setHours(18, 0)
-                                                )
+                                                MAX_SCHEDULE_TIME
                                             }
                                             filterTime={filterAvailableTimes}
                                             timeCaption="Time"
