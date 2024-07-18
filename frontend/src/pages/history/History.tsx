@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import {
     Table,
-    TableCaption,
     Thead,
     Tbody,
     Tr,
@@ -41,6 +40,7 @@ const History = () => {
     const [loading, setLoading] = useState<boolean>(true)
     const [sortBy, setSortBy] = useState<string>('date')
     const [error, setError] = useState<string | null>(null)
+
     const [selectedStatuses, setSelectedStatuses] = useState<string[]>([
         'Pendente',
         'Cancelado',
@@ -72,14 +72,15 @@ const History = () => {
         setLoading(false)
     }
 
-    const applyFilters = async () => {
-        setPage(1)
-        await fetchData()
-    }
 
     useEffect(() => {
         fetchData()
-    }, [page, date, order, sortBy, selectedStatuses])
+    }, [page, date, order, sortBy])
+
+    useEffect(() => {
+        setPage(1)
+        fetchData()
+    }, [selectedStatuses])
 
     if (loading || datesLoading) {
         return (
@@ -117,6 +118,9 @@ const History = () => {
             bg={'gray.50'}
             p={4}
         >   
+            <Heading justifySelf="center" alignSelf="center">
+                    Histórico de agendamentos
+            </Heading>
             <Flex justify="center" align="center" mt="4">
                 <IconButton
                     icon={
@@ -142,11 +146,8 @@ const History = () => {
                         </Heading>
                     </Center>
                 ) : (
-                    <TableContainer maxH="75vh">
+                    <TableContainer maxH="70vh" overflowY={"auto"}>
                         <Table variant="simple">
-                            <TableCaption>
-                                Histórico de agendamentos
-                            </TableCaption>
                             <Thead>
                                 <Tr>
                                     <SortableHeader
@@ -221,13 +222,14 @@ const History = () => {
                     date={date}
                     setDate={setDate}
                     availableDates={availableDates}
-                    applyFilters={applyFilters}
                     selectedStatuses={selectedStatuses}
                     setSelectedStatuses={setSelectedStatuses}
                 />
             </Center>
             <Box flex="1" />
             <Flex justify="center" align="center" mt="4" mb="4">
+            {
+                    appointments.length > 0 && <>
                 <IconButton
                     bg="#da4c44"
                     color="white"
@@ -248,12 +250,13 @@ const History = () => {
                     icon={<ChevronRightIcon />}
                     onClick={() => setPage(page + 1)}
                     isDisabled={page === totalPages || totalPages === 0}
-                />
-                
-            </Flex>
-            <Text size="s" color="gray.500" ml="4">
+                /> <Text size="s" color="gray.500" ml="4">
                     {page} de {totalPages}
                 </Text>
+                </>}
+                
+            </Flex>
+            
         </Flex>
     )
 }
