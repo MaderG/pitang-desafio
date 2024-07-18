@@ -130,7 +130,7 @@ Antes de iniciar os testes e2e, é necessário configurar o ambiente e preparar 
 
 Crie um arquivo `.env.test` na raiz do projeto e adicione as variáveis de ambiente necessárias, conforme o exemplo fornecido em `.env.test.example`.
   ```sh
-  DATABASE_URL=file:./dev.db
+  DATABASE_URL=file:./test.db
   NODE_ENV=test
   PORT=5000
   ```
