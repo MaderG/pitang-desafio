@@ -18,6 +18,7 @@ import {
   MAX_HOURLY_APPOINTMENTS,
 } from '../utils/constants'
 import { InvalidHourError } from '../errors/InvalidHourError'
+import { InvalidYearError } from '../errors/InvalidYearError'
 
 export class CreateAppointmentService {
   async createAppointment(
@@ -38,7 +39,8 @@ export class CreateAppointmentService {
       if (error instanceof PastDateError || 
           error instanceof InvalidHourError || 
           error instanceof BookingBoundsError || 
-          error instanceof AlreadyBookedError) {
+          error instanceof AlreadyBookedError ||
+          error instanceof InvalidYearError) {
         throw error
       }
       throw new Error('Ocorreu um erro ao criar o agendamento')
@@ -49,12 +51,20 @@ export class CreateAppointmentService {
     inputData: AppointmentInput,
     dateObj: Date,
   ): Promise<void> {
+    this.validateBirthYear(inputData.birthDate)
     this.checkPastDate(dateObj)
     this.checkValidHour(dateObj)
     await this.validateExistingAppointment(inputData)
     await this.validateDailyLimit(dateObj)
     await this.validateHourlyLimit(dateObj)
   }
+
+  private validateBirthYear(birthDate: string): void {
+    const birthDateYear = birthDate.split('-')[0]
+    if (Number(birthDateYear) < 1900) {
+      throw new InvalidYearError('Ano inválido')
+  }
+}
 
   private checkPastDate(dateObj: Date): void {
     if (isBefore(dateObj, new Date())) {
