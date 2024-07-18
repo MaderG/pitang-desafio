@@ -4,5 +4,4 @@ export type FilterModalProps = {
     availableDates: Date[]
     selectedStatuses: string[]
     setSelectedStatuses: (statuses: string[]) => void
-    applyFilters: () => void
 }

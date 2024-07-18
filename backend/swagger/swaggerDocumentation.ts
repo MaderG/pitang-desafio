@@ -57,7 +57,7 @@
  *         name: limit
  *         schema:
  *           type: integer
- *           example: 8
+ *           example: 7
  *         required: false
  *         description: Limite de itens por página
  *       - in: query
