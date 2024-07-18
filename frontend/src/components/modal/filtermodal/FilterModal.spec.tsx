@@ -96,15 +96,6 @@ describe('<FilterModal />', () => {
         expect(mockProps.setSelectedStatuses).not.toHaveBeenCalled()
     })
 
-    it('should call applyFilters when the apply button is clicked', () => {
-        fireEvent.click(screen.getByText('Filtrar agendamentos'))
-        const applyButton = screen.getByRole('button', {
-            name: 'Aplicar Filtros',
-        })
-        fireEvent.click(applyButton)
-        expect(mockProps.applyFilters).toHaveBeenCalledTimes(1)
-    })
-
     it('should apply the selected date when the apply button is clicked', () => {
         fireEvent.click(screen.getByText('Filtrar agendamentos'))
         const dateInput = screen.getByTestId('input')

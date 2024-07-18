@@ -28,7 +28,6 @@ const FilterModal = ({
     availableDates,
     selectedStatuses,
     setSelectedStatuses,
-    applyFilters,
 }: FilterModalProps) => {
     const { isOpen, closeModal, title, message } = useModal();
     const [loading, setLoading] = useState(false);
@@ -36,7 +35,7 @@ const FilterModal = ({
     const [tempDate, setTempDate] = useState<Date | null>(date);
     const [tempStatuses, setTempStatuses] = useState<string[]>(selectedStatuses);
 
-    const handleApplyFilters = async () => {
+    const handleApplyFilters = () => {
         setLoading(true);
         try {
             if (
@@ -53,7 +52,6 @@ const FilterModal = ({
                 }
             }
             setSelectedStatuses(tempStatuses);
-            await applyFilters();
         } catch (error) {
             console.error('Error applying filters:', error);
         } finally {
